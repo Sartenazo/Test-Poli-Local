@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Test Policía Local</title>
+<meta name="theme-color" content="#132b66">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Test Policía">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#16213a;--mut:#5d6882;--line:#dde3ee;--pri:#1b3c8c;--pri2:#2851b8;--ok:#1f8a4c;--okbg:#e6f6ec;--ko:#c0392b;--kobg:#fdecea;--warn:#a86a00;--warnbg:#fff4dc}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1420;--card:#18202f;--ink:#e8ecf5;--mut:#9aa6bf;--line:#2a3448;--pri:#7fa2ff;--pri2:#9db8ff;--ok:#4cc27e;--okbg:#14301f;--ko:#ff7a6b;--kobg:#3a1a17;--warn:#f0b54a;--warnbg:#3a2c0f}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(135deg,#132b66,#1b3c8c);color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 16px}
+header .in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px}
+header h1{margin:0;font-size:1.35rem;letter-spacing:.3px}
+header p{margin:2px 0 0;font-size:.85rem;opacity:.85}
+.badge{width:44px;height:44px;flex:none}
+main{max-width:760px;margin:0 auto;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+h2{font-size:1.05rem;margin:0 0 10px}
+label.f{display:block;font-size:.85rem;color:var(--mut);margin:10px 0 4px}
+select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+.chk{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:.92rem}
+.chk input{margin-top:3px;width:18px;height:18px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:12px;padding:12px 18px;font-weight:600;font-size:1rem}
+.btn.sec{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.btn:disabled{opacity:.4;cursor:default}
+.full{width:100%;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.stat{background:var(--bg);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.3rem}.stat span{font-size:.75rem;color:var(--mut)}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--mut);margin-bottom:8px}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-bottom:14px}.bar i{display:block;height:100%;background:var(--pri2);transition:width .3s}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{font-size:.72rem;padding:3px 8px;border-radius:20px;background:var(--bg);color:var(--mut);border:1px solid var(--line)}
+.chip.warn{background:var(--warnbg);color:var(--warn);border-color:transparent;font-weight:600}
+.q{font-size:1.07rem;font-weight:600;margin:4px 0 14px}
+.opt{display:flex;gap:10px;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-bottom:9px;font-size:.97rem}
+.opt .l{flex:none;width:26px;height:26px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.opt:not(:disabled):hover{border-color:var(--pri2)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.ok .l{background:var(--ok);color:#fff}
+.opt.ko{border-color:var(--ko);background:var(--kobg)}.opt.ko .l{background:var(--ko);color:#fff}
+.opt:disabled{cursor:default}
+.fb{border-radius:12px;padding:12px 14px;margin-top:6px;font-size:.93rem}
+.fb.ok{background:var(--okbg)}.fb.ko{background:var(--kobg)}.fb.warn{background:var(--warnbg);margin-top:10px}
+.fb h3{margin:0 0 4px;font-size:1rem}.fb.ok h3{color:var(--ok)}.fb.ko h3{color:var(--ko)}.fb.warn h3{color:var(--warn)}
+.fb p{margin:4px 0 0}
+.src{font-size:.75rem;color:var(--mut);margin-top:10px}
+.big{font-size:2.6rem;font-weight:800;text-align:center;margin:6px 0 0}
+.sub{text-align:center;color:var(--mut);font-size:.9rem;margin-bottom:6px}
+.rev{border-top:1px solid var(--line);padding:10px 0;font-size:.9rem}
+.rev b{display:block;margin-bottom:3px}
+.rev .c{color:var(--ok)}.rev .y{color:var(--ko)}
+.note{font-size:.8rem;color:var(--mut)}
+.hidden{display:none}
+a{color:var(--pri)}
+</style>
+</head>
+<body>
+<header><div class="in">
+<svg class="badge" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3l17 6v13c0 11-7.5 19.5-17 23C14.5 41.5 7 33 7 22V9z" fill="#f2c94c"/><path d="M24 7l13 4.6V22c0 8.7-5.6 15.6-13 18.7C16.6 37.6 11 30.7 11 22V11.6z" fill="#1b3c8c"/><path d="M24 14l2.6 5.4 5.9.8-4.3 4.1 1 5.8L24 27.3l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#f2c94c"/></svg>
+<div><h1>Test Policía Local</h1><p id="sub">Exámenes reales de Castilla-La Mancha y práctica por temas</p></div>
+</div></header>
+<main>
+
+<section id="home">
+  <div class="card">
+    <h2>Configura tu test</h2>
+    <label class="f" for="fEx">Examen de origen</label>
+    <select id="fEx"></select>
+    <label class="f" for="fBl">Bloque temático</label>
+    <select id="fBl"></select>
+    <div class="row">
+      <div><label class="f" for="fN">Número de preguntas</label>
+        <select id="fN"><option value="10">10</option><option value="20" selected>20</option><option value="40">40</option><option value="0">Todas</option></select></div>
+      <div><label class="f" for="fOrd">Orden</label>
+        <select id="fOrd"><option value="r">Aleatorio</option><option value="o">Como en el examen</option></select></div>
+    </div>
+    <label class="chk"><input type="checkbox" id="fAn" checked> <span>Incluir preguntas <b>anuladas o dudosas</b> (se explican, pero no cuentan para la nota)</span></label>
+    <label class="chk"><input type="checkbox" id="fFail"> <span>Solo preguntas que he fallado antes</span></label>
+    <p class="note" id="avail"></p>
+    <button class="btn full" id="go">Empezar test</button>
+  </div>
+  <div class="card">
+    <h2>Tu progreso</h2>
+    <div class="stats"><div class="stat"><b id="sT">0</b><span>respondidas</span></div><div class="stat"><b id="sA">0%</b><span>aciertos</span></div><div class="stat"><b id="sF">0</b><span>pendientes de repaso</span></div></div>
+    <button class="btn sec full" id="reset">Borrar progreso</button>
+  </div>
+  <div class="card">
+    <h2>Sobre las preguntas</h2>
+    <p class="note" id="cnt"></p>
+    <p class="note"><b>Exámenes oficiales:</b> examen unificado de la Junta para los ayuntamientos que le encargan la selección (4 de octubre de 2025), Almansa (diciembre de 2024), La Solana (2014), Almagro (2024) y Consuegra (2024). La respuesta es la de la plantilla oficial; los enunciados están resumidos.</p>
+    <p class="note"><b>Práctica por temas:</b> preguntas redactadas sobre las materias que se repiten en el temario de los ayuntamientos de CLM (Constitución, Estatuto, Leyes 39 y 40/2015, régimen local, empleo público, LO 2/1986, seguridad ciudadana, Código Penal, LECrim, tráfico, igualdad y datos). No son de examen oficial, pero preguntan lo mismo que suelen preguntar los tribunales.</p>
+    <p class="note"><b>Estados:</b> “Anulada” = el tribunal la anuló. “Dudosa” = la respuesta oficial es discutible. “Ojo, norma cambiada” = la ley ha cambiado desde el examen.</p>
+    <p class="note">Es una demo para practicar. Comprueba siempre la ley vigente y las bases de tu convocatoria.</p>
+  </div>
+</section>
+
+<section id="quiz" class="hidden">
+  <div class="card">
+    <div class="top"><span id="pos"></span><span id="score"></span></div>
+    <div class="bar"><i id="prog"></i></div>
+    <div class="chips" id="chips"></div>
+    <div class="q" id="qt"></div>
+    <div id="opts"></div>
+    <div id="fb"></div>
+    <div class="src" id="src"></div>
+    <div class="row" style="margin-top:12px"><button class="btn sec" id="quit">Terminar</button><button class="btn" id="next" disabled>Siguiente</button></div>
+  </div>
+</section>
+
+<section id="end" class="hidden">
+  <div class="card">
+    <h2>Resultado</h2>
+    <div class="big" id="nota"></div>
+    <div class="sub" id="det"></div>
+    <div class="sub" id="pen"></div>
+    <div class="row"><button class="btn sec" id="home2">Inicio</button><button class="btn" id="retry">Repetir fallos</button></div>
+  </div>
+  <div class="card"><h2>Repaso</h2><div id="rev"></div></div>
+</section>
+</main>
+
+<script>
+/* Estados: "" válida · "anulada" · "dudosa" · "cambiada" */
+const EX={
+ jccm25:"Junta CLM (examen unificado de ayuntamientos) · 2025",
+ solana14:"Ayto. La Solana (Ciudad Real) · 2014",
+ almagro24:"Ayto. Almagro (Ciudad Real) · 2024",
+ consuegra24:"Ayto. Consuegra (Toledo) · 2024"
+};
+const BL={ce:"Constitución",clm:"Estatuto y organización de CLM",proc:"Procedimiento administrativo",loc:"Régimen local",emp:"Empleo público",esp:"Espectáculos, alcohol y animales",pol:"Policía y seguridad",pen:"Penal y procesal",tra:"Tráfico y transporte",otr:"Igualdad, datos y otras"};
+const Q=[];let TN=0;
+function T(b,q,o,a,e,s,n){Q.push(["tem",++TN,b,q,o,a,e,s,n])}
+Q.push(
+// ===== JCCM 2025 =====
+["jccm25",1,"ce","¿Qué regula el Título VI de la Constitución?",["Derechos y deberes fundamentales","Poder Judicial","Gobierno y Administración","Cortes Generales"],1,"El Título VI (arts. 117-127) es el del Poder Judicial. Título I: derechos y deberes; Título III: Cortes Generales; Título IV: Gobierno y Administración."],
+["jccm25",2,"ce","¿Qué derecho constitucional NO tiene la consideración de fundamental?",["Sindicarse","Educación","Elegir libremente la residencia","Propiedad privada y herencia"],3,"La propiedad privada y la herencia (art. 33) están en la Sección 2.ª del Capítulo II, fuera de los derechos fundamentales (arts. 15-29). Sindicación (28), educación (27) y residencia (19) sí son fundamentales."],
+["jccm25",3,"ce","¿Quién declara el estado de sitio (art. 116 CE)?",["El Gobierno por decreto en Consejo de Ministros, dando cuenta al Congreso","El Congreso por mayoría absoluta, a propuesta exclusiva del Gobierno","El Congreso por mayoría absoluta, a propuesta de su Presidente","El Gobierno por decreto, con autorización previa del Congreso"],1,"Art. 116.4 CE: el estado de sitio lo declara el Congreso por mayoría absoluta, a propuesta exclusiva del Gobierno. La opción A corresponde al estado de alarma y la D al de excepción."],
+["jccm25",4,"ce","Según el art. 68 CE, el Congreso se compone de:",["Entre 250 y 350 diputados","Entre 300 y 400 diputados","350 diputados","300 diputados"],1,"Art. 68.1 CE: un mínimo de 300 y un máximo de 400 diputados. Que sean 350 lo fija la LOREG, no la Constitución."],
+["jccm25",5,"ce","Firmas que exige la iniciativa legislativa popular:",["200.000","400.000","500.000","Un millón"],2,"Art. 87.3 CE y LO 3/1984: no menos de 500.000 firmas acreditadas."],
+["jccm25",6,"ce","¿Cómo se nombra al Presidente del Tribunal Constitucional?",["Lo nombra el CGPJ","El Presidente del Gobierno, a propuesta del CGPJ","El Rey, a propuesta del Pleno del Tribunal, por tres años","El Rey, a propuesta del Tribunal Supremo, por tres años"],2,"Art. 160 CE: lo nombra el Rey de entre sus miembros, a propuesta del Pleno del propio Tribunal, por tres años."],
+["jccm25",7,"ce","¿Quién resuelve los conflictos de competencia entre el Estado y las Comunidades Autónomas?",["Tribunal Supremo","El TSJ de la Comunidad que lo plantea","Tribunal Constitucional","Audiencia Nacional"],2,"Art. 161.1.c CE: el Tribunal Constitucional conoce de los conflictos de competencia entre el Estado y las CCAA o de estas entre sí."],
+["jccm25",8,"ce","Plazo máximo para convalidar un Decreto-ley:",["Diez días hábiles desde su publicación","Los treinta días siguientes a su promulgación","Veinte días naturales desde su entrada en vigor","No existe plazo"],1,"Art. 86.2 CE: el Congreso debe pronunciarse en los 30 días siguientes a su promulgación."],
+["jccm25",9,"ce","En la primera votación de investidura, la confianza se otorga por mayoría:",["Absoluta","Simple","De dos tercios","De tres cuartos"],0,"Art. 99.3 CE: mayoría absoluta en la primera votación; si no, 48 horas después basta la mayoría simple."],
+["jccm25",10,"clm","Límite a la potestad tributaria de las Comunidades Autónomas:",["No pueden establecer tributos propios","No pueden gravar bienes fuera de su territorio ni obstaculizar la libre circulación","Solo recaudan impuestos cedidos","No pueden establecer tasas"],1,"Art. 157.2 CE: las CCAA no pueden adoptar medidas tributarias sobre bienes situados fuera de su territorio ni que obstaculicen la libre circulación de mercancías o servicios. Sí pueden crear tributos propios y tasas."],
+["jccm25",11,"clm","Mayoría de las Cortes de CLM para aprobar la ley del Gobierno y del Consejo Consultivo:",["Simple","Absoluta","Dos tercios","Tres quintos"],3,"El Estatuto de Autonomía de CLM exige mayoría de tres quintos para la ley que regula el Gobierno y el Consejo Consultivo."],
+["jccm25",12,"clm","Según el art. 32 del Estatuto de CLM, corresponde a la Junta el desarrollo legislativo y la ejecución en materia de:",["Pastos","Propiedad industrial","Productos farmacéuticos","Contraste de metales"],0,"Art. 32 del Estatuto (desarrollo y ejecución): montes, vías pecuarias y pastos. Propiedad industrial, productos farmacéuticos y contraste de metales son de ejecución o del Estado."],
+["jccm25",13,"proc","Según el art. 128 de la Ley 39/2015, los reglamentos y disposiciones administrativas:",["Pueden establecer contribuciones especiales","No pueden establecer tributos","Pueden tipificar nuevas infracciones administrativas","Pueden graduar sanciones alterando los límites legales"],1,"Art. 128.2: no pueden tipificar delitos, faltas o infracciones administrativas, ni establecer penas o sanciones, ni tributos, exacciones parafiscales u otras cargas públicas."],
+["jccm25",14,"clm","¿Quién elige al Presidente del Consejo Consultivo de CLM (Ley 11/2003)?",["Todos los miembros del Consejo","Los miembros natos, de entre ellos","Los miembros electivos, de entre ellos","Las Cortes por tres quintos"],2,"Art. 42 Ley 11/2003: el Presidente lo eligen los miembros electivos de entre los de esa procedencia."],
+["jccm25",15,"proc","Sobre las notificaciones en papel (art. 42 Ley 39/2015):",["Deben ponerse a disposición en la sede electrónica para acceso voluntario","Puede recibirla cualquier persona mayor de doce años","Si nadie la recibe, se repite una vez en hora distinta en los tres días naturales siguientes","Los dos intentos deben separarse al menos tres horas"],0,"Art. 42.1: las notificaciones en papel también se ponen a disposición del interesado en la sede electrónica. La persona que recibe debe tener 14 años, el segundo intento es en los tres días siguientes (no naturales) y la separación es de al menos 3 horas solo si el primer intento fue antes de las 15:00."],
+["jccm25",16,"proc","Una notificación electrónica obligatoria se entiende rechazada a los:",["Diez días naturales","Quince días hábiles","Quince días naturales","Diez días hábiles"],0,"Art. 43.2 Ley 39/2015: transcurridos diez días naturales desde su puesta a disposición sin acceder a su contenido."],
+["jccm25",17,"proc","Acordar en un solo acto los trámites que admiten impulso simultáneo responde al principio de:",["Economía","Simplificación administrativa","Eficacia","Eficiencia"],1,"Art. 72.1 Ley 39/2015, “concentración de trámites”, de acuerdo con el principio de simplificación administrativa."],
+["jccm25",18,"proc","Si la prueba consiste en el informe de un órgano administrativo, ese informe tiene carácter:",["Preceptivo","Facultativo y no vinculante","Determinante","Vinculante"],0,"Art. 77.7 Ley 39/2015: el informe de un órgano administrativo usado como prueba se entiende preceptivo."],
+["jccm25",19,"proc","Contra las disposiciones generales de las Entidades locales cabe:",["Contencioso ante los “Juzgados Superiores de Justicia”","Recurso potestativo de reposición","Contencioso ante los Juzgados de lo Contencioso","Contencioso ante las Salas de lo Contencioso de los TSJ"],3,"Contra las disposiciones generales no cabe recurso administrativo (art. 112.3 Ley 39/2015). Van directamente a las Salas de lo Contencioso de los TSJ (art. 10.1.b LJCA)."],
+["jccm25",20,"proc","La infracción continuada (art. 29 Ley 40/2015) consiste en:",["Varias acciones u omisiones que infringen el mismo o semejante precepto, con plan preconcebido o aprovechando idéntica ocasión","Plan preconcebido, solo si infringen el mismo precepto","Acciones espontáneas o aprovechando distinta ocasión","Acciones espontáneas, solo si infringen el mismo precepto"],0,"Art. 29.6 Ley 40/2015: realización de una pluralidad de acciones u omisiones que infrinjan el mismo o semejantes preceptos, en ejecución de un plan preconcebido o aprovechando idéntica ocasión."],
+["jccm25",21,"proc","La reincidencia como criterio de graduación exige:",["Un año y resolución firme en vía administrativa","Dos años y resolución firme","Un año y sentencia judicial","Dos años y sentencia judicial"],0,"Art. 29.3.d Ley 40/2015: otra infracción de la misma naturaleza en el plazo de un año, declarada por resolución firme en vía administrativa."],
+["jccm25",22,"esp","Según la Ley 2/1995 de CLM, es bebida alcohólica la que supera:",["0,5 %","1 %","2 %","3 %"],1,"La ley regional considera bebida alcohólica la de graduación igual o superior al 1 % de su volumen."],
+["jccm25",23,"esp","Está prohibido (art. 3 Ley 7/2011 de CLM):",["Lo que incumpla la normativa ambiental","Festejos taurinos profesionales según normativa local","Eventos deportivos, turísticos y de juego que no observen su normativa específica","Lo que incumpla la protección del menor y la familia"],2,"La plantilla definitiva da la C, que recoge literalmente el supuesto del art. 3 de la Ley 7/2011."],
+["jccm25",24,"esp","Es competencia de los Ayuntamientos (art. 5 Ley 7/2011):",["Autorizar espectáculos taurinos en espacios públicos demaniales","Autorizar espectáculos y festejos taurinos","Limitar el horario de terrazas y veladores en espacios públicos","Fijar el horario general de los establecimientos"],2,"Art. 5: los municipios pueden limitar el horario de terrazas y veladores. Los festejos taurinos y el horario general son competencia autonómica."],
+["jccm25",25,"esp","Para abrir un establecimiento con aforo superior a 150 personas hace falta:",["Declaración responsable potestativa","Autorización o licencia","Declaración responsable","Comunicación previa"],1,"Art. 7.2.a Ley 7/2011: aforo superior a 150 personas requiere autorización o licencia. Por debajo basta, en general, la declaración responsable."],
+["jccm25",26,"esp","Es infracción muy grave (art. 45 Ley 7/2011):",["Admitir menores donde tienen prohibida la entrada","Falta de hojas de reclamaciones","Permitir o tolerar el consumo o tráfico ilegal de drogas","Destinar el local a actividades distintas de las autorizadas"],2,"Permitir o tolerar actividades ilegales de consumo o tráfico de drogas es muy grave. Las otras son graves o leves."],
+["jccm25",27,"loc","¿Qué órgano dicta los bandos (art. 21 LBRL)?",["El Alcalde","El Alcalde o el concejal delegado","El Pleno","La Junta de Gobierno Local"],0,"Art. 21.1.e LBRL: dictar bandos es atribución del Alcalde (y no es delegable: art. 21.3)."],
+["jccm25",28,"loc","Composición de la Junta de Gobierno Local:",["El Alcalde y concejales en número no superior a un tercio del número legal","Alcalde, secretario y la mitad de concejales","Alcalde, Jefe de Policía y Subdelegado del Gobierno","Alcalde y concejales de mayor y menor edad"],0,"Art. 23.1 LBRL: el Alcalde y un número de concejales no superior al tercio del número legal, nombrados y separados libremente por él."],
+["jccm25",29,"loc","Municipios obligados a prestar el servicio de protección civil (art. 26 LBRL):",["Todos","Más de 1.000 habitantes","Más de 5.000","Más de 20.000"],3,"Art. 26.1.c LBRL: en municipios de más de 20.000 habitantes, protección civil, prevención y extinción de incendios, entre otros."],
+["jccm25",30,"loc","En el procedimiento de aprobación de ordenanzas locales:",["La aprobación inicial es de la Junta de Gobierno","Información pública mínima de sesenta días","Información pública mínima de noventa días","La aprobación definitiva es del Pleno"],3,"Art. 49 LBRL: aprobación inicial por el Pleno, información pública mínima de 30 días y aprobación definitiva por el Pleno."],
+["jccm25",31,"loc","Publicidad de las sesiones:",["Las del Pleno y las de la Junta de Gobierno son públicas","Ambas son secretas","Las del Pleno son públicas y las de la Junta de Gobierno no","Las del Pleno son secretas y las de la Junta públicas"],2,"Art. 70.1 LBRL: las sesiones del Pleno son públicas; las de la Junta de Gobierno no lo son."],
+["jccm25",32,"emp","Actividad exceptuada del régimen de incompatibilidades (art. 19 Ley 53/1984):",["Administrar el patrimonio personal o familiar, en todo caso","Participar en tribunales calificadores de pruebas selectivas","Producción literaria derivada de la relación de empleo","Impartir cursos en centros de formación de funcionarios de forma habitual hasta 150 h"],1,"Art. 19.d: participar en tribunales calificadores está exceptuado. La A tiene matices (art. 19.a); la producción literaria no puede derivar del puesto; los cursos no pueden ser habituales ni superar 75 horas al año."],
+["jccm25",33,"pol","Falta grave según la LO 4/2010 (régimen disciplinario del Cuerpo Nacional de Policía):",["Exhibir los distintivos de identificación sin causa justificada","Prescindir del conducto reglamentario para solicitudes o quejas","Exhibir armas sin causa justificada","Insubordinación individual o colectiva"],2,"Exhibir armas sin causa justificada es falta grave (art. 8). La insubordinación es muy grave; exhibir distintivos y prescindir del conducto reglamentario son leves."],
+["jccm25",34,"emp","Sobre la renuncia a la condición de funcionario:",["Se manifiesta verbalmente y la Administración la acepta expresamente","Puede aceptarse aunque haya auto de procesamiento","No puede aceptarse si el funcionario está sujeto a expediente disciplinario","Inhabilita para volver a ingresar"],2,"Art. 64 TREBEP: la renuncia debe ser expresa y por escrito, y no se acepta si hay expediente disciplinario o auto de procesamiento. No impide volver a ingresar por un nuevo proceso selectivo."],
+["jccm25",35,"emp","Un funcionario que pasa a una organización internacional queda en situación de:",["Servicio en otras Administraciones","Excedencia por prestación de servicios en el sector público","Excedencia por interés particular","Servicios especiales"],3,"Art. 87.1.b TREBEP: servicios especiales."],
+["jccm25",36,"pol","¿Cómo adopta los acuerdos la Junta Local de Seguridad (RD 1087/2010)?",["Por mayoría de sus integrantes","Por mayoría absoluta","Por unanimidad","Por consenso"],0,"La plantilla oficial da la A (art. 10 RD 1087/2010). Ojo: es una pregunta de memoria literal muy habitual."],
+["jccm25",37,"pol","Categorías de la Escala Técnica (art. 14 Ley 8/2002 de Coordinación de CLM):",["Intendente y Superintendente","Comisario Jefe y Comisario","Inspector y Subinspector","Oficial y Agente"],0,"Escala Técnica: Superintendente e Intendente. Ejecutiva: Inspector y Subinspector. Básica: Oficial y Policía."],
+["jccm25",38,"pol","Medalla que puede concederse a personas sin vinculación directa con las Policías Locales de CLM:",["Mérito Profesional, categoría plata","Mérito Policial, categoría plata","Mérito Profesional","Mérito Policial"],1,"Según la Orden de 28/10/2010 de distinciones, la Medalla al Mérito Policial en categoría de plata puede concederse a personas ajenas a los cuerpos."],
+["jccm25",39,"pen","Plazo para comunicar el resultado de diligencias ordenadas por juez o fiscal (art. 296 LECrim):",["24 horas","48 horas","72 horas","El que fije la orden o requerimiento"],3,"La plantilla da la D: el plazo es el que fije la autoridad judicial o fiscal en su orden."],
+["jccm25",40,"pen","Los atestados de la Policía Judicial se consideran (art. 297 LECrim):",["Declaraciones testificales","Informes legales","Denuncias a todos los efectos legales","Acusaciones informales"],2,"Art. 297 LECrim: los atestados tienen el valor de denuncias a efectos legales."],
+["jccm25",41,"pen","No son responsables penalmente conforme al Código Penal:",["Los menores de 18 años","Menores de 16","Menores de 14","Menores de 12"],0,"Art. 19 CP: los menores de 18 años no responden con arreglo al Código Penal; se aplica la LO 5/2000 (de 14 a 17 años)."],
+["jccm25",42,"pen","Pena por golpear o maltratar de obra sin causar lesión (art. 147.3 CP):",["Prisión de tres meses a tres años","Multa de seis a doce meses","Multa de uno a tres meses","Multa de uno a dos meses"],3,"Art. 147.3 CP: multa de uno a dos meses."],
+["jccm25",43,"pen","Pena de la agresión sexual con violencia o intimidación (art. 178 CP):",["Prisión de uno a cuatro años","Prisión de uno a cinco años","Prisión de cuatro a doce años","Multa de 18 a 24 meses"],1,"Tras la LO 3/2023, si hay violencia o intimidación la pena es de prisión de uno a cinco años (el tipo básico es de uno a cuatro)."],
+["jccm25",44,"otr","Obligación de los medios de comunicación según la LO 1/2004:",["Publicidad gratuita a campañas comerciales","Limitar la programación infantil","No informar de procesos judiciales","Fomentar la igualdad y evitar toda discriminación entre mujeres y hombres"],3,"Art. 14 LO 1/2004: los medios fomentarán la protección y salvaguarda de la igualdad entre hombre y mujer, evitando toda discriminación."],
+["jccm25",45,"otr","Órgano de cooperación entre administraciones en infancia y adolescencia (LO 8/2021):",["Comisión de Coordinación de infancia","Conferencia Sectorial de infancia y adolescencia","Consejo Superior de infancia","Comisión Bilateral"],1,"Art. 7 LO 8/2021: la Conferencia Sectorial de infancia y adolescencia."],
+["jccm25",46,"pen","Apoderarse de papeles o interceptar comunicaciones de otro para descubrir sus secretos es delito:",["Contra la libertad","Contra el honor","De descubrimiento y revelación de secretos","De lesiones"],2,"Art. 197 CP: descubrimiento y revelación de secretos."],
+["jccm25",47,"pen","Cuantía a partir de la cual el hurto se castiga con prisión de 6 a 18 meses:",["400 €","500 €","1.000 €","2.000 €"],0,"Art. 234 CP: si lo sustraído supera 400 €; si no, es delito leve con multa."],
+["jccm25",48,"pen","Incendio que pone en peligro la vida o integridad de las personas (art. 351 CP):",["Multa de seis a doce meses","Multa de 18 a 24 meses","Prisión de uno a cuatro años","Prisión de diez a veinte años"],3,"Art. 351 CP: prisión de diez a veinte años."],
+["jccm25",49,"pen","Funcionario que se niega abiertamente a cumplir resoluciones judiciales u órdenes superiores:",["Cohecho","Desobediencia","Tráfico de influencias","Malversación"],1,"Art. 410 CP: delito de desobediencia."],
+["jccm25",50,"pen","Actuando en grupo, obstaculizar vías públicas con violencia o intimidación poniendo en peligro vida o salud:",["Prisión de seis meses a tres años","Prisión de uno a cuatro años","Multa de seis a doce meses","Multa de 18 a 24 meses"],0,"La plantilla oficial da la A (desórdenes públicos, art. 557 ter/560 bis CP tras la LO 14/2022)."],
+["jccm25",51,"pen","Pueden instar el habeas corpus (art. 3 LO 6/1984):",["Un amigo del detenido","El Ministerio Fiscal o el Defensor del Pueblo","El Alcalde","Cualquier español"],1,"Pueden instarlo el privado de libertad, su cónyuge o pareja, descendientes, ascendientes, hermanos y representantes, el Ministerio Fiscal, el Defensor del Pueblo y el juez de oficio."],
+["jccm25",52,"tra","Un conductor da 0,72 mg/l en aire espirado:",["No es delito: solo sanción administrativa","Es delito y no cabe además sanción administrativa (non bis in idem)","Es delito y además se sanciona administrativamente","Solo es delito si hay accidente"],1,"Más de 0,60 mg/l es delito (art. 379.2 CP) aunque no haya accidente. Si hay delito, la vía administrativa se suspende y no se puede castigar dos veces el mismo hecho.","anulada","El tribunal anuló la pregunta en la plantilla definitiva (la provisional daba la B). No publicó el motivo; probablemente fue la redacción de “excluye”, porque la sanción administrativa se retoma si no hay condena penal."],
+["jccm25",53,"tra","Es competencia municipal en tráfico (art. 7 Ley de Tráfico):",["Retirar y depositar vehículos en vías urbanas que obstaculicen o sean un peligro","Expedir y revisar permisos de conducir","Cerrar vías interurbanas","Expedir permisos de circulación"],0,"Art. 7.c RDL 6/2015: los municipios pueden retirar vehículos de las vías urbanas. Los permisos son competencia de la DGT."],
+["jccm25",54,"tra","Velocidad máxima del transporte escolar y de menores en vía convencional fuera de poblado:",["100 km/h","90 km/h","80 km/h","70 km/h"],2,"Art. 48 RGC: los autobuses tienen 90 km/h en vía convencional, y el transporte escolar y de menores circula 10 km/h por debajo: 80 km/h."],
+["jccm25",55,"tra","En vías convencionales, ¿quién está exento del cinturón de seguridad (RGC)?",["Taxistas de servicio","Viajeros y conductores de vehículos de urgencia","Solo conductores de vehículos de urgencia","Nadie"],3,"Art. 119 RGC: hay exenciones (certificado médico, vehículos de urgencia y policiales en servicio…). La exención del taxista es solo en vía urbana.","anulada","Anulada: la plantilla provisional decía “nadie” (D), pero el RGC sí recoge exenciones, como la de los vehículos de urgencia. No había una única respuesta correcta clara."],
+["jccm25",56,"tra","Crédito inicial de puntos con menos de tres años de antigüedad del permiso:",["8 puntos","9","10","12"],0,"Los noveles empiezan con 8 puntos. Llegan a 12 si no pierden puntos durante ese periodo."],
+["jccm25",57,"tra","Plazo de alegaciones en el procedimiento sancionador ordinario de tráfico:",["15 días hábiles","15 días naturales","20 días hábiles","20 días naturales"],3,"Art. 95 RDL 6/2015: 20 días naturales para alegar o pagar con reducción del 50 %."],
+["jccm25",58,"tra","¿Cuál es infracción grave según la Ley de Tráfico?",["Conducir con el permiso suspendido o con prohibición de uso","Alterar o deteriorar la señalización","Llevar inhibidores de radar","No identificar al conductor cuando se le requiere"],0,"La plantilla da la A como grave. Llevar inhibidores y no identificar al conductor son muy graves (art. 77)."],
+["jccm25",59,"tra","Tasa máxima de alcohol para un conductor de clase B con 18 meses de antigüedad:",["0,25 mg/l","0,50 g/l","0,30 g/l","0,15 mg/l"],3,"Art. 20 RGC: los conductores con menos de dos años de permiso tienen un límite de 0,15 mg/l en aire espirado (0,3 g/l en sangre). La plantilla definitiva da la D.","dudosa","Impugnable: 0,30 g/l en sangre es el mismo límite expresado de otra forma, así que la C también es correcta. El tribunal no la anuló; en el examen, elige la que da el dato en aire espirado si el enunciado habla de “tasa” sin más."],
+["jccm25",60,"tra","Diferencia entre “fallecido” y “fallecido a 24 horas” en estadística de tráfico:",["La víctima debe ser conductor o pasajero","“Fallecido” excluye suicidios","“Fallecido” incluye a quien muere en el acto o en los 30 días siguientes","“Fallecido a 24 h” aplica a conductores sin hospitalización"],2,"Orden INT/2223/2014: “fallecido” es quien muere en el acto o en los 30 días siguientes al accidente."],
+["jccm25",61,"tra","Vigencia de un permiso D para un conductor de 67 años:",["Cinco años","Diez años","Cinco años por ser del grupo 2","Tres años"],3,"Reglamento General de Conductores: los permisos C y D (grupo 2) duran 5 años, y 3 años a partir de los 65."],
+["jccm25",62,"tra","Para cambiar la titularidad de un vehículo declarado siniestro total con daños en elementos de seguridad hace falta:",["Que no afecte a elementos esenciales","Que el adquirente se comprometa a repararlo","Notificarlo al juez","Haber superado una ITV posterior al siniestro"],3,"El Reglamento General de Vehículos exige una inspección técnica favorable posterior a la declaración de siniestro total."],
+["jccm25",63,"tra","Si el vendedor no notifica la transmisión del vehículo en diez días:",["Inmovilización inmediata","Se anula el registro","Baja definitiva automática","Sigue siendo titular a efectos de tráfico"],3,"Art. 32 RGV: el transmitente sigue figurando como titular, con sus responsabilidades, hasta que lo comunique."],
+["jccm25",64,"tra","Es transporte “especial” (art. 66 Ley 16/1987, LOTT):",["Viajeros regulares de uso general","Transporte escolar","Mercancías perecederas a temperatura dirigida","Privado para uso propio"],2,"En la LOTT es transporte especial el de mercancías peligrosas, perecederas, residuos y similares. El escolar es transporte regular de uso especial, que no es lo mismo."],
+["jccm25",65,"pol","¿Qué órgano de la AGE sanciona las infracciones muy graves de la LO 4/2015?",["Delegado del Gobierno","Ministro del Interior","Jefe Superior de Policía","Subdelegado del Gobierno"],1,"Art. 32.1 LO 4/2015: las muy graves las sanciona el Ministro del Interior; las graves y leves, delegados y subdelegados."],
+["jccm25",66,"pol","Los planes de emergencia municipales en CLM:",["Los homologa la Consejería de protección civil","Los aprueba la Consejería","Los homologa el Pleno","Los aprueba el Consejo Nacional de Protección Civil"],0,"El plan municipal lo aprueba el Pleno y lo homologa la Comisión de Protección Civil de Castilla-La Mancha.","anulada","Anulada: ninguna opción decía exactamente quién homologa (la Comisión regional de protección civil, no la Consejería), y la C mezclaba aprobar con homologar."],
+["jccm25",67,"otr","En Microsoft Access, informes frente a formularios:",["Los informes introducen datos y los formularios imprimen","Los formularios sirven para introducir o editar registros; los informes, para presentar datos e imprimir o exportar","Hacen lo mismo","Los informes son automáticos y los formularios manuales"],1,"En Access, los formularios se usan para introducir y editar datos y los informes para presentarlos e imprimirlos."],
+["jccm25",68,"otr","“Composición equilibrada” según la LO 3/2007:",["Igual número de mujeres y hombres","Ningún sexo supera el 60 % ni baja del 40 %","70/30","Ninguno baja del 35 %"],1,"Disposición adicional primera LO 3/2007: ninguno de los sexos supera el 60 % ni baja del 40 %."],
+["jccm25",69,"otr","Edad mínima para que sea lícito tratar datos de un menor en servicios de la sociedad de la información según el RGPD:",["12","13","14","16"],3,"Art. 8 RGPD: 16 años, aunque cada Estado puede bajarla hasta 13. En España, el art. 7 LOPDGDD la fija en 14.","anulada","Anulada: el RGPD dice 16, pero en España rige 14 (LOPDGDD). Dos opciones podían defenderse."],
+["jccm25",70,"otr","Órgano científico-técnico de la AGE en seguridad y salud laboral (Ley 31/1995):",["Instituto Nacional de Seguridad e Higiene en el Trabajo","Inspección de Trabajo","Comisión Nacional de SST","Centro de Seguridad y Mejora"],0,"Art. 8 Ley 31/1995: el INSHT, hoy INSST."],
+["jccm25",71,"ce","Orden de sucesión a la Corona (art. 57 CE):",["Varón antes que mujer; en el mismo sexo, el menor antes que el mayor","Mujer antes que varón; el mayor antes que el menor","Línea anterior antes que las posteriores; en el mismo grado, el varón antes que la mujer; en el mismo sexo, el mayor antes que el menor","Línea posterior antes que las anteriores"],2,"Art. 57.1 CE, literal. (Era pregunta de reserva y entró al anularse otras.)"],
+["jccm25",72,"pol","Pase a segunda actividad por edad (art. 112 Decreto 110/2006):",["56 años en la Escala Ejecutiva","58 en la Básica","58 años en la Escala Ejecutiva","61 en la Técnica"],2,"La plantilla oficial da 58 años para la Escala Ejecutiva. Es pregunta de reserva que entró por anulación de otras."],
+["jccm25",73,"proc","Supuesto en que el silencio tiene efecto estimatorio (art. 24 Ley 39/2015):",["Revisión de oficio a instancia del interesado","Derecho de petición","Alzada en responsabilidad patrimonial contra un silencio desestimatorio","Alzada en materia de becas contra un silencio desestimatorio"],3,"Art. 24.1: el recurso de alzada contra una desestimación por silencio se entiende estimado si no se resuelve, salvo en las materias excluidas (por ejemplo, responsabilidad patrimonial). La revisión de oficio y el derecho de petición son desestimatorios.","anulada","Pregunta de reserva anulada por el tribunal, sin motivo publicado. La D parece la correcta según la ley, así que úsala para estudiar."],
+["jccm25",74,"pen","Puede ser atenuante:",["Alevosía","Arrebato u obcecación","Abuso de confianza","Precio o recompensa"],1,"Art. 21.3 CP: arrebato, obcecación u otro estado pasional. Las demás son agravantes (art. 22)."],
+["jccm25",75,"proc","La exigencia de responsabilidad penal al personal de la Administración, respecto a la responsabilidad patrimonial:",["La suspende siempre","No la suspende nunca","No la suspende, salvo que los hechos penales sean necesarios para fijarla","La suspende salvo que sean necesarios"],2,"Art. 37.2 Ley 40/2015: no suspende los procedimientos de responsabilidad patrimonial, salvo que fijar los hechos en vía penal sea necesario para determinarla."],
+// ===== LA SOLANA 2014 =====
+["solana14",1,"ce","Las bases de la organización militar se regulan por:",["Un Reglamento General","Ley ordinaria y reglamento","Ley Orgánica","Ordenanza castrense"],2,"Art. 8.2 CE: una ley orgánica regulará las bases de la organización militar."],
+["solana14",2,"ce","El mando supremo de las Fuerzas Armadas corresponde a:",["Los Reyes","El Capitán General","El Presidente del Gobierno con autorización de las Cortes","El Rey"],3,"Art. 62.h CE: corresponde al Rey el mando supremo de las Fuerzas Armadas."],
+["solana14",3,"pen","En la averiguación del delito, la policía judicial depende de:",["El Jefe Superior de Policía y los jueces","Los jueces, tribunales y Ministerio Fiscal","Solo los jueces","El Comisario de la Brigada Judicial"],1,"Art. 126 CE: la policía judicial depende de los Jueces, Tribunales y Ministerio Fiscal."],
+["solana14",4,"ce","Jueces y magistrados, independientes e inamovibles, están sometidos:",["A reglamentos autonómicos","A bandos municipales","Únicamente al imperio de la ley","A ordenanzas de justicia"],2,"Art. 117.1 CE."],
+["solana14",5,"ce","Corresponde al Gobierno:",["Dirigir la política interior y exterior","La Administración civil y militar y la defensa","La función ejecutiva y la potestad reglamentaria","Todas las anteriores"],3,"Art. 97 CE recoge todas."],
+["solana14",6,"pol","Misión de las Fuerzas y Cuerpos de Seguridad bajo dependencia del Gobierno:",["Proteger el libre ejercicio de derechos y libertades y garantizar la seguridad ciudadana","Evitar manifestaciones","Imponer multas coercitivas","Proteger a altos cargos"],0,"Art. 104.1 CE."],
+["solana14",7,"ce","¿Quién puede adoptar medidas que obstaculicen la libre circulación de personas y bienes en todo el territorio español?",["La Policía Local","Ninguna autoridad","Las FCS del Estado","Jueces de forma discrecional"],1,"Art. 139.2 CE: ninguna autoridad podrá adoptar medidas que obstaculicen la libertad de circulación."],
+["solana14",8,"clm","La norma institucional básica de Castilla-La Mancha es:",["La Constitución","El Reglamento Orgánico de la Junta","El Estatuto de Autonomía","La LBRL"],2,"Art. 147.1 CE y art. 1 del Estatuto: el Estatuto es la norma institucional básica."],
+["solana14",9,"clm","El Consejo de Gobierno de la Junta responde solidariamente ante:",["El TSJ","El Gobierno del Estado","Las Cortes Generales","Las Cortes de Castilla-La Mancha"],3,"El Consejo de Gobierno responde políticamente de forma solidaria ante las Cortes regionales."],
+["solana14",10,"clm","La Junta ejerce sus poderes con el objetivo básico de:",["Superar los desequilibrios entre territorios (principio de solidaridad)","La eficiencia municipal","Evitar duplicidades","Descentralización y concentración"],0,"Art. 4 del Estatuto: contribuir a la solidaridad y superar desequilibrios."],
+["solana14",11,"proc","Los procedimientos se inician de oficio:",["Por petición razonada de otros órganos","Por denuncia","Por acuerdo del órgano competente","Cualquiera de las anteriores"],2,"Hoy, art. 58 Ley 39/2015 (en 2014, art. 69 Ley 30/1992): de oficio se inicia siempre por acuerdo del órgano competente, que puede actuar por iniciativa propia, por orden superior, por petición razonada o por denuncia.","dudosa","Pregunta típica de impugnación: la D parece tentadora, pero la petición y la denuncia son solo los motivos; lo que inicia el procedimiento es el acuerdo del órgano. La plantilla mantuvo la C."],
+["solana14",12,"proc","Plazo del recurso de reposición contra un acto expreso:",["Un mes","Dos meses","Quince días","Un mes y quince días"],0,"Art. 124 Ley 39/2015 (antes art. 117 Ley 30/1992): un mes si el acto es expreso."],
+["solana14",13,"loc","Entidad local básica de la organización territorial del Estado:",["La provincia","El municipio","La EATIM","Ninguna"],1,"Art. 1 LBRL: el municipio es la entidad local básica."],
+["solana14",14,"loc","La inscripción en el Padrón de quien vive habitualmente en el municipio es:",["Conveniente","Opcional","Obligatoria","Aleatoria"],2,"Art. 15 LBRL: toda persona que vive en España debe inscribirse en el padrón del municipio donde reside habitualmente."],
+["solana14",15,"loc","La alteración de la calificación jurídica de bienes de dominio público corresponde a:",["El Primer Teniente de Alcalde","La Junta de Gobierno","El Alcalde","El Pleno"],3,"Art. 22.2.l LBRL (mayoría absoluta, art. 47.2.n)."],
+["solana14",16,"loc","Mayoría para aprobar el Reglamento Orgánico municipal:",["Simple de presentes","Absoluta del número legal de miembros","Un tercio de concejales","Mitad más uno de la Junta de Gobierno"],1,"Art. 47.2.f LBRL: mayoría absoluta del número legal de miembros."],
+["solana14",18,"esp","Objetivos de la Ley 7/2011 de espectáculos de CLM:",["Adaptarse a la Directiva 2006/123/CE","Adaptarse a la Ley 17/2009","Ambas","Ninguna"],2,"La ley se dictó para trasponer la Directiva de Servicios y adaptarse a la Ley 17/2009, que la incorporó al derecho español."],
+["solana14",19,"esp","¿Cuál NO es competencia municipal según la Ley 7/2011?",["Prohibir o suspender espectáculos que incumplan la ley","Fijar por reglamento las condiciones de admisión de personas","Recibir declaraciones responsables y otorgar licencias","Limitar el horario de terrazas"],1,"Regular por reglamento las condiciones de admisión es competencia autonómica; el resto son municipales."],
+["solana14",20,"esp","Medidas provisionales inmediatas (clausura, decomiso):",["Los agentes pueden adoptarlas sin audiencia previa en ciertas circunstancias","Siempre con audiencia previa","Exigen apoyo técnico obligatorio","Todas falsas"],0,"Ante un riesgo grave o inminente, los agentes pueden adoptarlas sin audiencia previa, que se da después."],
+["solana14",21,"esp","La inspección de establecimientos públicos es:",["Solo autonómica","Una función común de la Junta y los Ayuntamientos","Solo municipal","Ninguna"],1,"La Ley 7/2011 atribuye la inspección a ambas administraciones dentro de sus competencias."],
+["solana14",22,"esp","Hace falta autorización o licencia para abrir cuando el aforo supera:",["50","100","Siempre","150"],3,"Art. 7.2.a Ley 7/2011: aforo superior a 150 personas (en el examen de 2025 se volvió a preguntar)."],
+["solana14",23,"esp","Establecimientos abiertos al público de titularidad municipal:",["Exentos de licencia o declaración responsable, salvo que las ordenanzas digan otra cosa","Exentos si el aforo es menor de 2.000","Sujetos a licencia autonómica","Siempre con licencia municipal"],0,"Art. 7.4.c Ley 7/2011."],
+["solana14",24,"esp","Es infracción muy grave:",["Dedicar el local a actividades distintas","Admitir menores donde está prohibido","Permitir o tolerar actividades ilegales de drogas","No notificar el cambio de titular"],2,"Igual que en el examen de 2025: tolerar drogas es muy grave."],
+["solana14",25,"esp","Es infracción grave:",["No tener los seguros obligatorios","Superar el aforo sin riesgo grave","Hacer modificaciones sustanciales con riesgo grave","Ejercer el derecho de admisión de forma arbitraria o discriminatoria"],3,"La plantilla da la D. Ojo: según el texto exacto, alguna otra opción también podría tipificarse."],
+["solana14",26,"pol","Intervenciones de aplicación de normativa que no acaban en un procedimiento penal:",["Policía administrativa","Policía autonómica","Policía local","Cuerpo Nacional"],0,"Es la definición doctrinal de policía administrativa, frente a la policía judicial."],
+["solana14",28,"pol","La policía administrativa corresponde:",["Solo a la Policía Local","A los cuerpos estatales en su materia","A las policías autonómicas en su materia","B y C son correctas"],3,"La policía administrativa no es exclusiva de la Policía Local: cada administración la ejerce en sus competencias."],
+["solana14",29,"pol","¿Qué deber NO recoge el art. 98 del Decreto 110/2006?",["Actuar con integridad y dignidad","Presentarse con uniformidad y aseo","Asistir fuera de jornada a cursos, con traslado a cargo del municipio y manutención a cargo del agente","Informar a los superiores"],2,"La C está alterada: el reglamento no carga la manutención al agente."],
+["solana14",30,"pol","La categoría de Superintendente puede crearse (art. 8 Decreto 110/2006):",["Solo en capitales de provincia","En municipios de más de 50.000","En capitales y municipios de más de 50.000","En capitales y municipios de más de 70.000"],3,"Según la plantilla de 2014.","cambiada","Ojo: el Decreto 110/2006 se modificó en 2022 (Decreto 9/2022). Comprueba la redacción vigente antes de dar este dato por seguro."],
+["solana14",31,"otr","Función inspectora urbanística (art. 174 TRLOTAU, DLeg 1/2010):",["La AGE y subsidiariamente la Junta","La Junta y subsidiariamente la AGE","La Junta y subsidiariamente los municipios","Los municipios en su término y subsidiariamente la Junta"],3,"El TRLOTAU atribuye la inspección a los municipios y subsidiariamente a la Junta."],
+["solana14",32,"esp","Plazo para inscribir un animal potencialmente peligroso en el registro (Ley 50/1999):",["2 meses desde el nacimiento","15 días desde el nacimiento","15 días desde que se obtiene la licencia","2 meses desde la licencia"],2,"Art. 6 Ley 50/1999: en los 15 días siguientes a obtener la licencia."],
+["solana14",33,"emp","Señala la INCORRECTA sobre los órganos de selección (Ley 4/2011 de Empleo Público de CLM):",["El personal de designación política no puede formar parte","Número par de miembros, no inferior a seis","Titulación igual o superior a la exigida","Imparcialidad, especialización y profesionalidad"],1,"Los órganos de selección tienen número impar de miembros, no inferior a cinco."],
+["solana14",34,"emp","Cupo de plazas reservadas a personas con discapacidad:",["No inferior al 3 %","Superior al 3 %","No inferior al 7 %","No hay mínimo"],2,"Art. 59 TREBEP: no inferior al 7 %. En Policía Local, por la naturaleza de la plaza, el cupo no se aplica igual."],
+["solana14",35,"pol","Criterio organizativo INCORRECTO (art. 9 Decreto 110/2006):",["Un oficial por cada policía o hasta seis","Un subinspector por cada cinco o seis oficiales","Un inspector por cada dos o tres subinspectores","Un intendente por cada dos o tres inspectores"],1,"La plantilla da la B como incorrecta.","cambiada","El Decreto 110/2006 se modificó en 2022: comprueba las ratios vigentes."],
+["solana14",36,"pol","Ante un incumplimiento urbanístico, la Policía Local:",["Debe inspeccionar y, en su caso, denunciar","No tiene competencias","Puede levantar acta de paralización","A y C"],0,"La paralización la acuerda el órgano municipal competente, no el agente."],
+["solana14",37,"pol","La Policía Local ejerce policía administrativa (art. 53.1 LO 2/86) en lo relativo a:",["Licencias de apertura","Licencias de obras","Ordenanzas, bandos y demás disposiciones municipales","A y B"],2,"Art. 53.1.d LO 2/1986."],
+["solana14",38,"otr","Una diferencia de trato por razón de sexo (art. 5 LO 3/2007):",["Siempre es discriminación","No es discriminación si es un requisito profesional esencial, con objetivo legítimo y proporcionado","No siempre es discriminación","B y C"],3,"El art. 5 admite excepciones justificadas, así que B y C son correctas."],
+["solana14",39,"otr","Señala la INCORRECTA (art. 51 LO 3/2007):",["Facilitar la conciliación","Reservar un 3 % de plazas a víctimas de maltrato","Presencia equilibrada en los tribunales","Proteger frente al acoso sexual"],1,"El art. 51 no reserva un cupo de plazas a víctimas de violencia."],
+["solana14",40,"otr","¿Qué NO corresponde al Título VIII de la LO 3/2007?",["Comisión Interministerial de Igualdad","Unidades de Igualdad","Consejo de Participación de la Mujer","Comisiones paritarias de representación laboral"],3,"El Título VIII regula los órganos de la AGE; las comisiones paritarias no están ahí."],
+["solana14",41,"tra","Si hay sentencia penal condenatoria y el procedimiento administrativo estaba suspendido:",["Se notifica al denunciado","Se archiva sin declarar responsabilidad","Se paga la multa y se archiva","Ninguna"],1,"Non bis in idem: con condena penal, el expediente administrativo se archiva."],
+["solana14",45,"proc","Una notificación rehusada:",["Se tiene por no hecha y se reintenta","Se tiene por efectuado el trámite y se sigue el procedimiento","Debe publicarse en el BOP","Ninguna"],1,"Art. 41.5 Ley 39/2015: se hace constar el rechazo y se tiene por efectuado el trámite."],
+["solana14",47,"tra","Caducidad del procedimiento sancionador de tráfico:",["A los tres años","Al año","Si no hay resolución pasado un año desde su inicio","Si se paraliza por causa penal"],2,"Hoy art. 112.3 RDL 6/2015: caduca si no se notifica la resolución en un año desde el inicio."],
+["solana14",49,"tra","Hay que renovar el permiso de circulación cuando:",["Cambia el domicilio del propietario","Cambia el domicilio del vehículo","Cambia la titularidad registral","Ninguna"],2,"Con el cambio de titular se expide un nuevo permiso; el cambio de domicilio solo se comunica."],
+["solana14",50,"pen","¿Pueden las Policías Locales instruir diligencias de juicio rápido?",["No, solo las FCS del Estado","Sí","No","Solo sin detenido"],1,"Art. 796 LECrim: la Policía Judicial, incluida la Local, practica las diligencias de los juicios rápidos."],
+// ===== ALMAGRO 2024 =====
+["almagro24",1,"ce","¿Qué recoge el art. 15 de la Constitución?",["Nadie puede ser obligado a declarar sobre su ideología","Derecho a la libertad y la seguridad","Igualdad ante la ley","Derecho a la vida y abolición de la pena de muerte"],3,"Art. 15: vida e integridad, y abolición de la pena de muerte. La A es el art. 16, la B el 17 y la C el 14."],
+["almagro24",2,"ce","Según el art. 68 CE, sobre el Congreso es correcto que:",["Entre 300 y 400 diputados","Cuatro por provincia","Ceuta y Melilla eligen dos cada una","Es la cámara de representación territorial"],0,"Hay un mínimo inicial por provincia que fija la ley (hoy 2), Ceuta y Melilla eligen uno cada una, y la cámara territorial es el Senado."],
+["almagro24",3,"ce","Al Rey le corresponde:",["El mando supremo de las Fuerzas Armadas","Sancionar y promulgar las leyes","Convocar y disolver las Cortes","Todas las anteriores"],3,"Art. 62 CE recoge las tres."],
+["almagro24",4,"ce","¿Qué establece el art. 123.1 CE?",["Las actuaciones no son públicas","El Tribunal Supremo es el órgano jurisdiccional superior en todos los órdenes, salvo en garantías constitucionales","Regula cómo se nombra al presidente del TS","Excluye la acción popular y el jurado"],1,"Art. 123.1 CE. El nombramiento del Presidente del TS está en el 123.2."],
+["almagro24",5,"ce","La responsabilidad penal del Presidente y de los miembros del Gobierno (art. 102.1 CE) es exigible ante:",["No es exigible por la prerrogativa de gracia","La Sala de lo Penal del TC","La Sala de lo Penal del Tribunal Supremo","La Sala de lo Penal del TS, siempre con iniciativa parlamentaria"],2,"Art. 102.1 CE. La iniciativa parlamentaria solo se exige para traición o delitos contra la seguridad del Estado (art. 102.2)."],
+["almagro24",6,"ce","El Estado se organiza territorialmente (art. 137 CE) en:",["Municipios, provincias y Comunidades Autónomas","Iguales derechos en todo el territorio","Gobierno municipal","Gobierno provincial"],0,"Art. 137 CE, literal."],
+["almagro24",7,"proc","Los reglamentos son:",["Dictados por la Junta de Gobierno Local","Modificables por un acto administrativo simple","Disposiciones generales de rango inferior a la ley","Pueden tipificar delitos"],2,"Inderogabilidad singular: un acto no puede vulnerar un reglamento (art. 37 Ley 39/2015), y los reglamentos no tipifican delitos."],
+["almagro24",8,"proc","Plazo para cursar una notificación desde que se dicta el acto (art. 40 Ley 39/2015):",["2 días","5 días","7 días","10 días"],3,"Art. 40.2: dentro de los diez días siguientes a la fecha en que se dictó."],
+["almagro24",9,"proc","El recurso de reposición (art. 123 Ley 39/2015) procede contra:",["Actos firmes","Actos que ponen fin a la vía administrativa","Disposiciones generales","Reclamaciones económicas"],1,"Art. 123.1: actos que ponen fin a la vía administrativa, con carácter potestativo."],
+["almagro24",10,"loc","El art. 21.1.i LBRL atribuye al Alcalde:",["La jefatura de la Policía Local","La RPT","La plantilla","Los reglamentos"],0,"Art. 21.1.i LBRL. La plantilla y la RPT son del Pleno."],
+["almagro24",11,"loc","Según el art. 23.1 LBRL, sobre la Junta de Gobierno Local:",["Alcalde y concejales nombrados libremente por él","Órgano territorial desconcentrado","Existe en todos los ayuntamientos","Límite de la mitad de concejales"],0,"Es obligatoria solo en municipios de más de 5.000 habitantes, y el límite es un tercio de concejales."],
+["almagro24",12,"loc","Procedimiento de ordenanzas locales:",["Aprobación inicial por el Pleno, información pública de 30 días, aprobación definitiva y publicación en el BOP","Igual, con 15 días","Pleno por mayoría absoluta","Junta de Gobierno"],0,"Art. 49 LBRL y art. 70.2 para la publicación."],
+["almagro24",13,"emp","Para ser funcionario de carrera (art. 62 TREBEP) hay que:",["Solo superar el proceso","Además, nombramiento publicado","Además, acatar la Constitución","Superar el proceso, nombramiento publicado, acatar la Constitución, el Estatuto y el resto del ordenamiento, y tomar posesión"],3,"Art. 62.1 TREBEP: los cuatro requisitos sucesivos."],
+["almagro24",14,"loc","Son entidades locales territoriales (art. 3.1 LBRL):",["Municipio, provincia, isla y comarcas","Más áreas metropolitanas","Municipio, provincia e isla","Más áreas metropolitanas y mancomunidades"],2,"Art. 3.1 LBRL. Comarcas, áreas metropolitanas y mancomunidades son otras entidades locales (art. 3.2)."],
+["almagro24",21,"proc","¿Qué NO es un principio de la potestad sancionadora (Ley 40/2015)?",["Igualdad","Responsabilidad","Non bis in idem","Tipicidad"],0,"Los principios de los arts. 25-31 son legalidad, irretroactividad, tipicidad, responsabilidad, proporcionalidad, prescripción y non bis in idem."],
+["almagro24",29,"esp","Seguro de responsabilidad civil para la licencia de perro potencialmente peligroso (RD 287/2002):",["120.000 €","20.000 €","150.000 €","100.000 €"],0,"Art. 3.1.e RD 287/2002: cobertura no inferior a 120.000 €."],
+["almagro24",38,"tra","El permiso D1 autoriza autobuses de:",["Hasta 18 pasajeros y 8 m","Hasta 16 pasajeros (además del conductor) y 8 m de longitud","Hasta 16 pasajeros y 12 m","20 pasajeros y 15 m"],1,"Art. 4 Reglamento General de Conductores."],
+["almagro24",39,"tra","Edad mínima para el permiso A1:",["15","17","16","18"],2,"16 años (AM: 15; A2: 18; A: 20 o 24)."],
+["almagro24",44,"pol","Señala la INCORRECTA sobre la LO 4/2015:",["Hay espectáculos excluidos de su acción ordinaria","Los menores de 14 años están exentos de responsabilidad","El DNI es obligatorio desde los 16 años","Caben registros corporales externos contra la voluntad del afectado"],2,"Art. 9.1 LO 4/2015: el DNI es obligatorio a partir de los 14 años. La B es cierta (art. 30.1) y la D también (art. 20)."],
+["almagro24",45,"otr","Objeto de la LO 3/2018:",["Tribunal Constitucional","Consejo de Estado","Protección de datos personales y garantía de los derechos digitales","Tribunal de Cuentas"],2,"LO 3/2018 de Protección de Datos Personales y garantía de los derechos digitales."],
+// ===== CONSUEGRA 2024 =====
+["consuegra24",34,"pen","¿Cuál NO es función de la Policía Judicial?",["La averiguación del delito","El descubrimiento y aseguramiento del delincuente","La protección del libre ejercicio de los derechos y libertades","Ninguna: todas son funciones de la Policía Judicial"],2,"Las funciones de la Policía Judicial (art. 126 CE, art. 547 LOPJ) son averiguar el delito y descubrir y asegurar al delincuente. Proteger derechos y libertades es la misión general de las FCS (art. 104 CE).","anulada","Anulada: la provisional daba la D, pero la C no es función de la Policía Judicial en sus normas propias. El tribunal admitió que generaba confusión y la sustituyó por una de reserva."]
+);
+
+EX.almansa24="Ayto. Almansa (Albacete) · 2024";
+Q.push(
+["almansa24",1,"pen","El art. 510 del Código Penal castiga:",["Delitos de funcionarios contra las garantías constitucionales","Delitos de funcionarios contra la inviolabilidad del domicilio","Los delitos de odio (fomento del odio, hostilidad, discriminación o violencia contra grupos)","La usurpación de atribuciones"],2,"El art. 510 CP regula los llamados delitos de odio."],
+["almansa24",2,"pen","Prevaricación del funcionario público (art. 404 CP): pena de inhabilitación especial de:",["3 a 6 años","9 a 15 años","2 a 6 años","1 a 5 años"],1,"Art. 404 CP: inhabilitación especial para empleo o cargo público y para el sufragio pasivo de nueve a quince años."],
+["almansa24",3,"pen","El delito de lesiones del art. 147 CP es perseguible:",["De oficio","Mediante denuncia del agraviado o su representante","No lo regula ese artículo","A y B son correctas"],3,"El tipo básico (147.1) se persigue de oficio, pero los delitos leves de los apartados 2 y 3 solo con denuncia del agraviado (147.4)."],
+["almansa24",4,"pen","Lesiones causadas con armas, instrumentos o medios peligrosos (art. 148.1 CP):",["Prisión de 2 a 5 años","De 1 a 5 años","De 3 a 6 años","De 1 a 3 años"],0,"Art. 148 CP: prisión de dos a cinco años, atendiendo al resultado o riesgo producido."],
+["almansa24",5,"pen","En la detención ilegal (art. 163 CP), la pena baja o sube si el detenido queda libre:",["Antes de 2 días / dura más de 30 días","Dentro de los 3 primeros días / dura más de 15 días","Antes de 5 días / más de 15","Antes de 3 días / más de 20"],1,"Art. 163.2: pena inferior en grado si se da libertad dentro de los tres primeros días. Art. 163.3: prisión de 5 a 8 años si dura más de quince días."],
+["almansa24",6,"pen","Actos de carácter sexual con menor (art. 181.1 CP):",["2 a 6 años, previa denuncia","Prisión de 2 a 6 años si el menor tiene menos de 16 años","3 a 5 años","Menor de 14, de 2 a 6 años"],1,"Art. 181.1 CP (tras la LO 10/2022): menor de dieciséis años, prisión de dos a seis años."],
+["almansa24",7,"pen","Robo o hurto de uso de vehículo (art. 244 CP): se castiga como tal si se restituye en un plazo no superior a:",["24 horas","48 horas","72 horas","24 horas si es fácil localizarlo"],1,"Art. 244.1 CP: restitución directa o indirecta en un plazo no superior a 48 horas. Si no se restituye, se castiga como hurto o robo."],
+["almansa24",16,"pen","Robo con fuerza de cosas de valor artístico, histórico, cultural o científico:",["Prisión de 2 a 5 años","3 a 6 años","1 a 3 años","2 a 4 años"],0,"Art. 241.4 CP: el robo con fuerza en que concurra alguna circunstancia del art. 235 (entre ellas, cosas de valor artístico o histórico) se castiga con prisión de dos a cinco años."],
+["almansa24",17,"pen","Usurpación de inmueble que no es morada, sin violencia ni intimidación (art. 245.2 CP):",["Multa de 3 a 6 meses","Prisión de 1 a 3 años","Prisión de 2 a 4 años","Multa de 6 a 12 meses"],0,"Art. 245.2 CP: multa de tres a seis meses."],
+["almansa24",21,"pen","En los robos con fractura o violencia, ¿quién describe los vestigios (LECrim)?",["La policía judicial, consultando a peritos","El Juez instructor","Se hace constar en el atestado","Solo en el robo, en diligencias"],1,"La LECrim encomienda al Juez instructor describir los vestigios del delito (inspección ocular, arts. 326 y siguientes)."],
+["almansa24",22,"proc","El art. 37.2 de la Ley 39/2015 declara nulas las resoluciones que incurran en las causas del artículo:",["46","47","48","49"],1,"Art. 37.2: nulas las resoluciones que vulneren una disposición reglamentaria o incurran en alguna causa del art. 47 (nulidad de pleno derecho)."],
+["almansa24",24,"proc","No se puede interponer recurso contencioso-administrativo hasta que se resuelva expresamente o se desestime por silencio el recurso de:",["Reposición","Alzada","Extraordinario de revisión","Ante el órgano superior"],0,"Art. 123.2 Ley 39/2015: si se ha interpuesto reposición, hay que esperar a que se resuelva o se entienda desestimado."],
+["almansa24",25,"proc","Excepciones a la ejecutividad inmediata de los actos (art. 98.1 Ley 39/2015). Señala la INCORRECTA:",["Que se suspenda la ejecución","Sanción contra la que quepa recurso administrativo, excepto el de reposición","Que una disposición establezca lo contrario","Que necesite aprobación o autorización superior"],1,"Art. 98.1.b: no son ejecutivas las sanciones contra las que quepa algún recurso en vía administrativa, incluido el potestativo de reposición. La B lo excluye, así que es falsa."],
+["almansa24",26,"proc","La responsabilidad patrimonial está en la Ley 40/2015, Capítulo IV, Sección 1.ª, artículos:",["32 a 35","31 a 34","33 a 36","Arts. 31-34 del Capítulo III"],0,"Arts. 32 a 35: principios de la responsabilidad patrimonial. El art. 36 trata la responsabilidad de autoridades y personal."],
+["almansa24",27,"proc","Procedimiento para exigir responsabilidad a autoridades y personal (art. 36.4 Ley 40/2015). Trámite INCORRECTO:",["Alegaciones 15 días y prueba 15 días","Audiencia 10 días","Propuesta en 5 días tras la audiencia","Resolución en 10 días"],3,"Art. 36.4: la resolución se dicta en el plazo de cinco días, no diez."],
+["almansa24",28,"esp","Las hojas de reclamaciones en Castilla-La Mancha se regulan por el:",["Decreto 72/1996, de 24 de junio","Decreto 72/1997, de 24 de junio","Decreto 72/1996, de 24 de julio","Decreto 72/1997, de 24 de julio"],1,"Decreto 72/1997, de 24 de junio, de hojas de reclamaciones de consumidores y usuarios de CLM."],
+["almansa24",29,"clm","El Decreto Legislativo 1/2023, de 28 de febrero, de CLM aprueba el texto refundido de la ley:",["Estatuto de las personas consumidoras","Venta ambulante","De Ordenación del Territorio y de la Actividad Urbanística","Reglamento de régimen local"],2,"Es el nuevo TRLOTAU, que sustituye al Decreto Legislativo 1/2010."],
+["almansa24",30,"esp","Ley 2/1995 de CLM: graduación a partir de la cual una bebida es alcohólica:",["0,0 %","0,1 %","1 %","4,9 %"],2,"1 % de su volumen. Se volvió a preguntar en el examen unificado de 2025."],
+["almansa24",31,"loc","La Comisión Especial de Cuentas (art. 20.1.e LBRL):",["Existe en todos los municipios","Es obligatoria en los de más de 5.000 habitantes","En los de más de 20.000","La aprueba el Pleno a propuesta del Alcalde"],0,"Art. 20.1.e LBRL: la Comisión Especial de Cuentas existe en todos los municipios, igual que el Alcalde, los Tenientes de Alcalde y el Pleno."],
+["almansa24",32,"loc","Es atribución del Alcalde:",["Aprobar la plantilla de personal","Aprobar el presupuesto","Aprobar la oferta de empleo público","A y C"],2,"Art. 21.1.g LBRL: el Alcalde aprueba la oferta de empleo público. La plantilla y el presupuesto son del Pleno."],
+["almansa24",33,"pol","¿Qué disposición final de la LO 4/2010 (régimen disciplinario del CNP) la hace aplicable a las Policías Locales?",["Tercera","Cuarta","Quinta","Sexta"],3,"La disposición final sexta extiende su aplicación a los Cuerpos de Policía Local."],
+["almansa24",34,"pol","Según el art. 12.1 de la LO 2/1986, NO corresponde al Cuerpo Nacional de Policía:",["Control de la seguridad privada","Colaboración con policías extranjeras","Control del juego","Resguardo fiscal del Estado"],3,"El resguardo fiscal del Estado corresponde a la Guardia Civil (art. 12.1.B.c)."],
+["almansa24",35,"ce","Sobre las Cortes Generales, señala la INCORRECTA:",["Nadie puede ser miembro de las dos Cámaras a la vez","Sus miembros están ligados por mandato imperativo","Son inviolables","Ejercen la potestad legislativa"],1,"Art. 67.2 CE: los miembros de las Cortes no están ligados por mandato imperativo."],
+["almansa24",36,"otr","Art. 6 LO 3/2007: tratar a una persona de forma menos favorable que a otra en situación comparable, por razón de sexo, es:",["Discriminación indirecta","Acoso por razón de sexo","Acoso sexual","Discriminación directa"],3,"Art. 6.1: discriminación directa. La indirecta (6.2) es una disposición aparentemente neutra que pone en desventaja a un sexo."],
+["almansa24",37,"ce","Los miembros del Tribunal Constitucional se designan por un periodo de:",["4 años","5 años","6 años","9 años"],3,"Art. 159.3 CE: nueve años, con renovación por terceras partes cada tres."],
+["almansa24",38,"ce","Están legitimados para el recurso de inconstitucionalidad (art. 162 CE):",["El Consejo de Ministros","60 Diputados","Los órganos colegiados ejecutivos de las CCAA","Todos los anteriores"],2,"Art. 162.1.a CE: Presidente del Gobierno (no el Consejo de Ministros), Defensor del Pueblo, 50 Diputados, 50 Senadores y los órganos colegiados ejecutivos y las Asambleas de las CCAA."],
+["almansa24",39,"ce","La moción de censura no puede votarse hasta pasados:",["3 días","5 días","6 días","10 días"],1,"Art. 113.3 CE: cinco días desde su presentación. En los dos primeros días pueden presentarse mociones alternativas."],
+["almansa24",40,"ce","NO es función del Consejo de Ministros (Ley 50/1997):",["Aprobar proyectos de ley","Aprobar el proyecto de Presupuestos","Aprobar Reales Decretos-leyes y Decretos Legislativos","Declarar el estado de sitio"],3,"El estado de sitio lo declara el Congreso por mayoría absoluta (art. 116.4 CE). El Gobierno declara la alarma y la excepción."],
+["almansa24",41,"ce","Los Estatutos del art. 152 CE, una vez sancionados, solo pueden modificarse:",["Por sus propios procedimientos y con referéndum","Por Ley Orgánica y referéndum","Por ley ordinaria y referéndum","Por Ley Orgánica"],0,"Art. 152.2 CE: mediante los procedimientos que ellos mismos establezcan y con referéndum entre los electores inscritos."],
+["almansa24",42,"ce","Materia que NO pueden asumir las Comunidades Autónomas:",["Ordenación del territorio, urbanismo y vivienda","Asistencia social","Administración de Justicia","Sanidad e higiene"],2,"Art. 149.1.5.ª CE: la Administración de Justicia es competencia exclusiva del Estado. Las demás están en el art. 148."],
+["almansa24",43,"clm","NO es competencia de las Cortes de Castilla-La Mancha:",["Controlar al Consejo de Gobierno","Establecer y exigir tributos","Interponer recurso de amparo y personarse ante el Tribunal Supremo","Aprobar las cuentas de la Junta"],2,"Las Cortes regionales pueden interponer recurso de inconstitucionalidad, no de amparo."],
+["almansa24",44,"clm","Materia en la que NO corresponde a la Junta la función ejecutiva:",["Productos farmacéuticos","Propiedad industrial","Propiedad intelectual","Hacienda general"],3,"La Hacienda general es competencia exclusiva del Estado (art. 149.1.14.ª CE)."],
+["almansa24",45,"clm","Duración del mandato de los miembros electivos del Consejo Consultivo de CLM:",["3 años","4 años","5 años","9 años"],2,"La plantilla da cinco años (Ley 11/2003)."],
+["almansa24",46,"ce","Las leyes de bases no podrán, en ningún caso (art. 83 CE):",["Autorizar la modificación de Decretos Legislativos","Autorizar la modificación de Decretos-ley","Autorizar la modificación de leyes ordinarias","Facultar para dictar normas con carácter retroactivo"],3,"Art. 83 CE: no podrán autorizar la modificación de la propia ley de bases ni facultar para dictar normas retroactivas."],
+["almansa24",47,"ce","La cesión de competencias derivadas de la Constitución a una organización internacional (art. 93 CE) se autoriza por:",["Decreto-ley","Decreto Legislativo","Ley Orgánica","Ley ordinaria"],2,"Art. 93 CE: mediante ley orgánica."],
+["almansa24",49,"esp","Que un artista se niegue a actuar sin causa justificada es, según la Ley 7/2011 de CLM, infracción:",["Leve","Grave","Muy grave","No está tipificada"],1,"Es infracción grave."],
+["almansa24",50,"esp","Graduación de las sanciones (art. 51 Ley 7/2011):",["No tienen que ser proporcionales","Se atiende a la trascendencia civil","Se atiende a la negligencia o intencionalidad","Se atiende a la seguridad y el orden"],2,"Entre los criterios de graduación están la negligencia o intencionalidad, el riesgo, la reincidencia y el beneficio obtenido."],
+["almansa24",51,"otr","Ante un riesgo grave e inminente, el trabajador (art. 21 Ley 31/1995):",["Puede paralizar toda la actividad","Puede interrumpir su actividad y abandonar el lugar de trabajo","Solo informar","Todas"],1,"Art. 21.2 LPRL: derecho a interrumpir su actividad y abandonar el lugar de trabajo si es necesario."],
+["almansa24",52,"otr","Edad a partir de la cual el consentimiento de un menor basta para tratar sus datos (art. 7 LOPDGDD):",["16","18","14","12"],2,"En España, a partir de 14 años. El RGPD fija 16 pero permite bajarla."],
+["almansa24",56,"tra","Exenciones al cinturón de seguridad (art. 119 RGC):",["Taxistas de servicio en cualquier vía","Conductores de vehículos de urgencia, nunca sus pasajeros","Acompañantes de aprendices sin doble mando","Conductores de reparto de mercancías en poblado, con paradas frecuentes"],3,"El RGC exime a los conductores de reparto en poblado. A los taxistas solo los exime en vía urbana."],
+["almansa24",57,"tra","Sobre las señales verticales:",["R-1 es STOP","R-101 es circulación prohibida","S-62 es pavimento deslizante","Todas son incorrectas"],3,"R-1 es ceda el paso (STOP es R-2), R-101 es entrada prohibida (circulación prohibida es R-100) y pavimento deslizante es la P-19."],
+["almansa24",65,"tra","Permisos de conducción (RD 818/2009). Señala la INCORRECTA:",["B a los 18 años","C+E a los 21","A1 hasta 11 kW, a los 16","C1 hasta 16 pasajeros y 8 m, a los 18"],3,"La de 16 pasajeros y 8 m de longitud es la descripción del D1 (21 años). El C1 es para camiones de 3.500 a 7.500 kg."],
+["almansa24",71,"ce","En el estado de excepción NO puede suspenderse el derecho del:",["Art. 18.2 (inviolabilidad del domicilio)","Art. 17.3 (derechos del detenido: información y abogado)","Art. 20.1 a) y d)","Art. 28.2 (huelga)"],1,"Art. 55.1 CE: el apartado 3 del art. 17 queda fuera de la suspensión en el estado de excepción."],
+["almansa24",73,"pen","Puede instar el procedimiento de habeas corpus:",["Un amigo íntimo","El juez competente, de oficio","El abogado defensor","Ninguno"],1,"Art. 3 LO 6/1984: además de los legitimados, el juez competente puede iniciarlo de oficio."],
+["almansa24",74,"pen","Los derechos del detenido se recogen en la LECrim, en:",["Libro II, Título VI, Capítulo IV","Título IV, Capítulo VI","Título V, Capítulo VII","Art. 19 LOPJ"],0,"Arts. 520 y siguientes, en el Capítulo IV del Título VI del Libro II."],
+["almansa24",75,"pen","¿Qué artículo de la LECrim fija el ámbito del enjuiciamiento rápido?",["798","795","328","698"],1,"Art. 795 LECrim."],
+["almansa24",76,"pen","Conducción con manifiesto desprecio por la vida sin peligro concreto (art. 381.2 CP):",["Prisión 1-2 años, multa 6-12 meses y privación del permiso 6-10 años","Prisión 2-5 años…","Prisión 6 meses-2 años…","Prisión 3-6 meses…"],0,"Art. 381.2 CP. Si hay peligro concreto (381.1), la prisión es de 2 a 5 años."],
+["almansa24",77,"pen","Negarse a las pruebas de alcohol o drogas (art. 383 CP):",["Prisión 3-6 meses…","Prisión 6 meses-1 año, multa 3-6 meses…","Prisión de 6 meses a 1 año y privación del permiso de más de 1 hasta 4 años","Prisión 3-6 meses y privación de 1 a 2 años"],2,"Art. 383 CP: prisión de seis meses a un año y privación del derecho a conducir de uno a cuatro años."],
+["almansa24",79,"pol","Consumir alcohol en lugares públicos perturbando gravemente la tranquilidad (LO 4/2015) es infracción:",["Leve","Grave","Muy grave","Menos grave"],0,"Art. 37.17 LO 4/2015: leve. En cambio, consumir drogas en lugares públicos es grave (art. 36.16)."],
+["almansa24",80,"otr","La igualdad en las Fuerzas y Cuerpos de Seguridad se regula en la LO 3/2007 en:",["Título V, Capítulo V, arts. 67-68","Título IV, Capítulo IV, art. 50","Título VI, Capítulo IV","Título IV, Capítulo III, art. 44"],0,"Título V (igualdad en el empleo público), Capítulo V."],
+["almansa24",82,"otr","Deben designar delegado de protección de datos (art. 34 LOPDGDD):",["Empresas de seguridad privada","Centros docentes y universidades","Federaciones deportivas que traten datos de menores","Todos los anteriores"],3,"El art. 34.1 LOPDGDD incluye a todos ellos."],
+["almansa24",83,"otr","En Word, la alineación que ocupa todo el espacio entre márgenes es:",["Centrada","Derecha","Izquierda","Justificada"],3,"Justificada."],
+["almansa24",84,"pen","Delito de conducción con alcohol (art. 379.2 CP): tasa en aire espirado superior a:",["0,15 mg/l para noveles","1,2 g/l","0,30 g/l","0,60 mg/l"],3,"Más de 0,60 mg/l en aire espirado o 1,2 g/l en sangre, para cualquier conductor."],
+["almansa24",85,"ce","¿Cuántos senadores elige Melilla?",["Uno","Dos","Tres","Cinco"],1,"Art. 69.4 CE: Ceuta y Melilla eligen dos senadores cada una."]
+);
+
+EX.tem="Práctica por temas · temario común CLM";
+// ===== CONSTITUCIÓN =====
+T("ce","Según el art. 1.3 CE, la forma política del Estado español es:",["República federal","Monarquía parlamentaria","Monarquía constitucional absoluta","Estado autonómico"],1,"Art. 1.3 CE: la Monarquía parlamentaria.");
+T("ce","Valores superiores del ordenamiento jurídico (art. 1.1 CE):",["Libertad, igualdad, fraternidad y legalidad","Libertad, justicia, igualdad y pluralismo político","Justicia, seguridad jurídica, igualdad y democracia","Libertad, justicia, solidaridad y unidad"],1,"Art. 1.1 CE: libertad, justicia, igualdad y pluralismo político.");
+T("ce","Los españoles son mayores de edad a los (art. 12 CE):",["16 años","17 años","18 años","21 años"],2,"Art. 12 CE: a los dieciocho años.");
+T("ce","La detención preventiva no puede durar más del tiempo estrictamente necesario y, como máximo:",["24 horas","48 horas","72 horas","96 horas"],2,"Art. 17.2 CE: plazo máximo de setenta y dos horas; después, libertad o puesta a disposición judicial.");
+T("ce","Según el art. 18.2 CE, sin consentimiento del titular solo se puede entrar en un domicilio:",["Con orden del Alcalde","Con resolución judicial o en caso de flagrante delito","Con autorización del Delegado del Gobierno","Con orden del Ministerio Fiscal"],1,"Art. 18.2 CE: el domicilio es inviolable salvo consentimiento, resolución judicial o flagrante delito.");
+T("ce","El secuestro de publicaciones solo puede acordarse (art. 20.5 CE):",["Por el Gobierno","Por resolución judicial","Por el Ministerio del Interior","Por el Consejo de Ministros en estado de alarma"],1,"Art. 20.5 CE: solo en virtud de resolución judicial.");
+T("ce","Para las reuniones en lugares de tránsito público y manifestaciones (art. 21.2 CE):",["Hace falta autorización previa","Se da comunicación previa a la autoridad","No hace falta nada","Hace falta licencia municipal"],1,"Art. 21 CE: la reunión pacífica y sin armas no necesita autorización; en lugares de tránsito público se comunica previamente a la autoridad, que solo puede prohibirla por razones fundadas de alteración del orden público con peligro para personas o bienes.");
+T("ce","Las asociaciones solo pueden ser disueltas o suspendidas (art. 22.4 CE):",["Por el Ministerio del Interior","Por resolución judicial motivada","Por el Registro de Asociaciones","Por acuerdo del Gobierno"],1,"Art. 22.4 CE.");
+T("ce","El recurso de amparo ante el TC protege (art. 53.2 CE):",["Todos los derechos del Título I","Los arts. 14 a 29 y la objeción de conciencia del art. 30","Solo los arts. 15 a 29","Los principios rectores de la política social"],1,"Art. 53.2 CE: art. 14, Sección 1.ª del Capítulo II (arts. 15-29) y objeción de conciencia (art. 30.2).");
+T("ce","El Defensor del Pueblo es:",["Un órgano del Poder Judicial","Alto comisionado de las Cortes Generales","Un órgano del Gobierno","Un miembro del Consejo de Estado"],1,"Art. 54 CE: alto comisionado de las Cortes Generales para defender los derechos del Título I. La LO 3/1981 fija su mandato en cinco años.");
+T("ce","En cada provincia se eligen (art. 69.2 CE):",["Dos senadores","Tres senadores","Cuatro senadores","Cinco senadores"],2,"Art. 69.2 CE: cuatro senadores por provincia. Las islas mayores eligen tres, Ceuta y Melilla dos cada una, y las CCAA designan además senadores propios.");
+T("ce","Mandato de diputados y senadores:",["Tres años","Cuatro años","Cinco años","Seis años"],1,"Arts. 68.4 y 69.6 CE: cuatro años.");
+T("ce","Periodos ordinarios de sesiones de las Cámaras (art. 73 CE):",["Enero-junio y septiembre-diciembre","Septiembre a diciembre y febrero a junio","Todo el año salvo agosto","Octubre a diciembre y marzo a julio"],1,"Art. 73.1 CE.");
+T("ce","Para aprobar, modificar o derogar una ley orgánica se exige (art. 81.2 CE):",["Mayoría simple de ambas Cámaras","Mayoría absoluta del Congreso en votación final sobre el conjunto del proyecto","Tres quintos de cada Cámara","Dos tercios del Congreso"],1,"Art. 81.2 CE.");
+T("ce","El Rey sanciona las leyes aprobadas por las Cortes en el plazo de:",["5 días","10 días","15 días","30 días"],2,"Art. 91 CE: en quince días; luego las promulga y ordena su publicación.");
+T("ce","El referéndum consultivo lo convoca:",["El Presidente del Gobierno, con autorización del Senado","El Rey, a propuesta del Presidente del Gobierno, previamente autorizado por el Congreso","El Congreso por mayoría absoluta","El Consejo de Ministros"],1,"Art. 92.2 CE.");
+T("ce","La cuestión de confianza se entiende otorgada cuando vota a favor:",["La mayoría absoluta del Congreso","La mayoría simple de los Diputados","Tres quintos del Congreso","La mayoría absoluta de ambas Cámaras"],1,"Art. 112 CE: mayoría simple.");
+T("ce","La moción de censura debe proponerla al menos:",["Una quinta parte de los Diputados","Una décima parte de los Diputados, con un candidato a Presidente","Cincuenta Diputados","La mayoría absoluta"],1,"Art. 113.2 CE: una décima parte de los Diputados y debe incluir un candidato. Para prosperar necesita mayoría absoluta.");
+T("ce","El Consejo General del Poder Judicial lo integran:",["El Presidente del TS y 20 miembros nombrados por el Rey por 5 años","12 miembros por 9 años","20 miembros elegidos por los jueces por 4 años","El Ministro de Justicia y 15 vocales"],0,"Art. 122.3 CE.");
+T("ce","El Fiscal General del Estado lo nombra:",["El CGPJ","El Rey, a propuesta del Gobierno, oído el CGPJ","El Congreso","El Presidente del Tribunal Supremo"],1,"Art. 124.4 CE.");
+T("ce","El Tribunal Constitucional se compone de:",["9 miembros","10 miembros","12 miembros","15 miembros"],2,"Art. 159.1 CE: doce miembros nombrados por el Rey (4 a propuesta del Congreso, 4 del Senado, 2 del Gobierno y 2 del CGPJ).");
+T("ce","El estado de alarma lo declara:",["El Congreso por mayoría absoluta","El Gobierno, por un máximo de 15 días, dando cuenta al Congreso","El Gobierno, con autorización previa del Congreso, por 30 días","El Rey"],1,"Art. 116.2 CE: solo puede prorrogarse con autorización expresa del Congreso.");
+T("ce","El estado de excepción:",["Lo declara el Congreso por 15 días","Lo declara el Gobierno con autorización previa del Congreso; máximo 30 días, prorrogable otros 30","Lo declara el Gobierno sin límite de tiempo","Lo declara el Senado"],1,"Art. 116.3 CE.");
+T("ce","La reforma total de la Constitución o de su Título Preliminar, Capítulo II Sección 1.ª del Título I o Título II requiere (art. 168):",["Tres quintos de cada Cámara","Dos tercios de cada Cámara, disolución, ratificación por las nuevas Cámaras por dos tercios y referéndum","Mayoría absoluta y referéndum","Referéndum únicamente"],1,"Es el procedimiento agravado del art. 168 CE.");
+T("ce","En la reforma ordinaria (art. 167 CE), el referéndum es obligatorio si lo pide:",["Una décima parte de los miembros de cualquiera de las Cámaras en 15 días","El Gobierno","El Rey","50 Diputados en 30 días"],0,"Art. 167.3 CE.");
+T("ce","Según el art. 140 CE, el gobierno y la administración de los municipios corresponde a:",["La Diputación","Los Ayuntamientos, integrados por Alcaldes y Concejales","El Pleno solamente","La Comunidad Autónoma"],1,"Art. 140 CE.");
+T("ce","Principios de actuación de la Administración Pública (art. 103.1 CE):",["Eficacia, jerarquía, descentralización, desconcentración y coordinación","Legalidad, publicidad y eficiencia","Unidad, solidaridad y autonomía","Celeridad, economía y simplicidad"],0,"Art. 103.1 CE, sometida plenamente a la ley y al Derecho.");
+T("ce","Las funciones, principios básicos y estatutos de las Fuerzas y Cuerpos de Seguridad se regulan por (art. 104.2 CE):",["Ley ordinaria","Ley orgánica","Reglamento","Decreto-ley"],1,"Art. 104.2 CE: por ley orgánica, que es la LO 2/1986.");
+T("ce","La extradición (art. 13.3 CE):",["Puede concederse por delitos políticos","No se concede por delitos políticos, sin que se consideren tales los actos de terrorismo","La concede el Gobierno sin control judicial","Está prohibida"],1,"Art. 13.3 CE.");
+T("ce","El castellano es (art. 3 CE):",["Lengua cooficial","La lengua española oficial del Estado; todos tienen el deber de conocerla y el derecho a usarla","Lengua preferente","Solo lengua de la Administración"],1,"Art. 3.1 CE.");
+T("ce","El Tribunal de Cuentas depende directamente de:",["El Gobierno","Las Cortes Generales","El Ministerio de Hacienda","El Tribunal Supremo"],1,"Art. 136 CE: supremo órgano fiscalizador de las cuentas del Estado, dependiente de las Cortes.");
+T("ce","La provincia es (art. 141.1 CE):",["Un órgano de la Comunidad Autónoma","Una entidad local con personalidad jurídica propia, determinada por la agrupación de municipios","Una división del Estado sin personalidad","Una mancomunidad"],1,"Art. 141.1 CE.");
+// ===== ESTATUTO Y CLM =====
+T("clm","El Estatuto de Autonomía de Castilla-La Mancha se aprobó por:",["LO 9/1982, de 10 de agosto","LO 4/1983","Ley 7/1985","LO 2/1986"],0,"LO 9/1982, de 10 de agosto.");
+T("clm","Provincias que integran Castilla-La Mancha:",["Albacete, Ciudad Real, Cuenca, Guadalajara y Toledo","Las anteriores y Madrid","Albacete, Cuenca, Toledo y Ciudad Real","Las anteriores y Ávila"],0,"Son cinco provincias.");
+T("clm","Instituciones de la Junta de Comunidades de Castilla-La Mancha:",["Cortes, Presidente y Consejo de Gobierno","Parlamento, Gobierno y Tribunal Superior","Cortes, Defensor y Síndico","Asamblea y Diputación General"],0,"Son las Cortes, el Presidente y el Consejo de Gobierno.");
+T("clm","El número de diputados de las Cortes de Castilla-La Mancha, según el Estatuto, es:",["Entre 47 y 59","Entre 25 y 35","Exactamente 33","Entre 33 y 49"],1,"Tras la reforma de 2014, entre 25 y 35 diputados (pregunta de Consuegra 2024).");
+T("clm","El Presidente de la Junta de Comunidades es elegido por:",["Los ciudadanos directamente","Las Cortes de CLM de entre sus miembros, y nombrado por el Rey","El Consejo de Gobierno","El Gobierno de la Nación"],1,"Lo eligen las Cortes regionales de entre sus miembros y lo nombra el Rey.");
+T("clm","La ley de Coordinación de Policías Locales de Castilla-La Mancha es la:",["Ley 8/2002, de 23 de mayo","Ley 7/2011, de 21 de marzo","Ley 2/1995, de 2 de marzo","Ley 4/2011, de 10 de marzo"],0,"Ley 8/2002, desarrollada por el Decreto 110/2006.");
+T("clm","El Reglamento de la Ley de Coordinación de Policías Locales de CLM se aprobó por:",["Decreto 110/2006, de 17 de octubre","Decreto 72/1997","Decreto 9/2022, en su texto original","RD 1087/2010"],0,"Decreto 110/2006, de 17 de octubre, modificado entre otros por el Decreto 9/2022.");
+T("clm","Escalas de los Cuerpos de Policía Local en CLM:",["Técnica, Ejecutiva y Básica","Superior, Media y Básica","Mando y Ejecución","Oficiales y Agentes"],0,"Ley 8/2002.");
+T("clm","Categorías de la Escala Básica:",["Oficial y Policía","Subinspector y Oficial","Cabo y Agente","Agente y Auxiliar"],0,"Escala Básica: Oficial y Policía. Ejecutiva: Inspector y Subinspector. Técnica: Superintendente e Intendente.");
+T("clm","¿Qué Escuela imparte el curso selectivo de los policías locales de CLM?",["La Escuela Nacional de Policía de Ávila","La Escuela de Protección Ciudadana de Castilla-La Mancha","La Academia de Guardia Civil de Baeza","Cada Ayuntamiento"],1,"La Escuela de Protección Ciudadana de CLM.");
+T("clm","Permisos de conducir que se exigen para acceder a Policía en CLM:",["Solo B","B y A o A2","B y C","A1 y B"],1,"Las bases exigen las clases B y A o A2.");
+T("clm","La categoría de Policía de la Escala Básica se clasifica en el subgrupo:",["C2","C1","A2","B"],1,"Subgrupo C1, con título de Bachiller, Técnico o equivalente.");
+T("clm","La Ley 7/2011 de Castilla-La Mancha regula:",["Espectáculos públicos, actividades recreativas y establecimientos públicos","Venta ambulante","Protección civil","Bienestar animal"],0,"Ley 7/2011, de 21 de marzo.");
+T("clm","La Ley 2/1995 de Castilla-La Mancha trata de:",["La venta y publicidad de bebidas alcohólicas a menores","Las drogodependencias en general","El tabaco","Los espectáculos taurinos"],0,"Ley 2/1995, de 2 de marzo, contra la venta y publicidad de bebidas alcohólicas a menores.");
+T("clm","Según la Ley 2/1995 de CLM, se prohíbe vender o suministrar bebidas alcohólicas a:",["Menores de 16 años","Menores de 18 años","Menores de 21 años","Solo menores de 14"],1,"A los menores de 18 años.");
+T("clm","El plan territorial de emergencias de Castilla-La Mancha se conoce como:",["PLATECAM","PEMU","PLANCAL","SIGE"],0,"PLATECAM.");
+T("clm","El número europeo de emergencias es:",["091","062","112","092"],2,"El 112. 091 es Policía Nacional, 062 Guardia Civil y 092 suele ser Policía Local.");
+
+// ===== LEY 39/2015 =====
+T("proc","Cuando los plazos se señalan por días, sin decir otra cosa, se entienden (art. 30.2 Ley 39/2015):",["Naturales","Hábiles, excluidos sábados, domingos y festivos","Hábiles, excluidos solo domingos y festivos","Laborables, incluidos sábados"],1,"Art. 30.2 Ley 39/2015.");
+T("proc","Plazos fijados en meses o años (art. 30.4):",["Se computan de fecha a fecha; si en el mes de vencimiento no hay día equivalente, vence el último día del mes","Se cuentan siempre 30 días por mes","Se cuentan en días hábiles","Vencen el primer día hábil del mes siguiente"],0,"Art. 30.4 Ley 39/2015.");
+T("proc","Si la norma no fija plazo máximo para resolver, el plazo es de:",["1 mes","3 meses","6 meses","1 año"],1,"Art. 21.3 Ley 39/2015: tres meses.");
+T("proc","El plazo máximo para resolver que fije una norma no puede superar, salvo ley o Derecho de la UE:",["3 meses","6 meses","1 año","2 años"],1,"Art. 21.2 Ley 39/2015: seis meses.");
+T("proc","En los procedimientos iniciados a solicitud del interesado, el silencio es, por regla general:",["Desestimatorio","Estimatorio","Neutro","Caducidad"],1,"Art. 24.1: estimatorio, salvo que una ley o el Derecho de la UE digan lo contrario.");
+T("proc","En los procedimientos sancionadores iniciados de oficio, si vence el plazo sin resolver se produce:",["Silencio estimatorio","La caducidad","La prescripción automática de la infracción","Nada"],1,"Art. 25.1.b Ley 39/2015: caducidad.");
+T("proc","Están obligados a relacionarse electrónicamente con la Administración (art. 14.2):",["Todas las personas físicas","Las personas jurídicas","Solo los funcionarios","Los mayores de 65 años"],1,"Art. 14.2: personas jurídicas, entidades sin personalidad, profesionales colegiados en su actividad, entre otros.");
+T("proc","Plazo para subsanar una solicitud defectuosa (art. 68.1):",["5 días","10 días","15 días","1 mes"],1,"Diez días, con la advertencia de tenerle por desistido.");
+T("proc","Plazo del trámite de audiencia (art. 82.2):",["No inferior a 5 ni superior a 10 días","No inferior a 10 ni superior a 15 días","20 días","1 mes"],1,"Art. 82.2 Ley 39/2015.");
+T("proc","El plazo de información pública no puede ser inferior a (art. 83.2):",["10 días","15 días","20 días","30 días"],2,"Art. 83.2: no inferior a veinte días.");
+T("proc","La ampliación de plazos no puede exceder de (art. 32.1):",["La mitad de los plazos establecidos","El doble","Un mes","15 días"],0,"Art. 32.1 Ley 39/2015.");
+T("proc","Plazo para interponer recurso de alzada contra un acto expreso:",["15 días","1 mes","2 meses","3 meses"],1,"Art. 122.1: un mes. El plazo para resolver es de tres meses.");
+T("proc","Plazo máximo para resolver y notificar el recurso de reposición:",["15 días","1 mes","3 meses","6 meses"],1,"Art. 124.2: un mes.");
+T("proc","Es nulo de pleno derecho el acto (art. 47.1):",["Que incurra en cualquier infracción del ordenamiento","Dictado por órgano manifiestamente incompetente por razón de la materia o del territorio","Realizado fuera del plazo establecido","Con defectos de forma"],1,"Art. 47.1.b. El resto suele ser anulabilidad (art. 48).");
+T("proc","Un acto dictado fuera de plazo (art. 48.3):",["Es nulo","Solo es anulable si así lo impone la naturaleza del término o plazo","Es inexistente","Es siempre válido y eficaz"],1,"Art. 48.3 Ley 39/2015.");
+T("proc","Medios de ejecución forzosa (art. 100):",["Apremio sobre el patrimonio, ejecución subsidiaria, multa coercitiva y compulsión sobre las personas","Solo el apremio","Embargo y subasta","Detención del obligado"],0,"Art. 100.1 Ley 39/2015.");
+T("proc","Si el infractor reconoce su responsabilidad y paga voluntariamente, cada reducción sobre la sanción será de al menos:",["10 %","20 %","25 %","50 %"],1,"Art. 85.3: al menos un 20 % cada una, y son acumulables.");
+T("proc","En la tramitación simplificada, el procedimiento debe resolverse en:",["10 días","30 días","3 meses","6 meses"],1,"Art. 96.6 Ley 39/2015: treinta días desde el día siguiente al acuerdo de tramitación simplificada.");
+T("proc","Cuando no se puede practicar la notificación, se hace por anuncio en:",["El BOP","El Boletín Oficial del Estado","El tablón del Ayuntamiento solamente","Un periódico de difusión nacional"],1,"Art. 44 Ley 39/2015: en el BOE.");
+T("proc","Contenido mínimo de la notificación (art. 40.2):",["Solo el texto del acto","Texto íntegro, si pone fin a la vía administrativa, recursos, órgano y plazo","Un resumen","El nombre del funcionario"],1,"Art. 40.2 Ley 39/2015.");
+T("proc","Plazo para reclamar responsabilidad patrimonial (art. 67.1):",["6 meses","1 año desde el hecho o la manifestación del daño","2 años","4 años"],1,"Prescribe al año. En daños físicos o psíquicos, se cuenta desde la curación o la determinación de las secuelas.");
+// ===== LEY 40/2015 =====
+T("proc","Prescripción de las infracciones, salvo que la ley diga otra cosa (art. 30 Ley 40/2015):",["Muy graves 3 años, graves 2 años, leves 6 meses","Muy graves 5, graves 3, leves 1","Todas al año","Muy graves 2, graves 1, leves 3 meses"],0,"Art. 30.1 Ley 40/2015.");
+T("proc","Prescripción de las sanciones (art. 30 Ley 40/2015):",["Muy graves 3 años, graves 2 años, leves 1 año","Todas a los 4 años","Muy graves 5, graves 3, leves 6 meses","Igual que las infracciones"],0,"Art. 30.1 Ley 40/2015.");
+T("proc","Es motivo de abstención el parentesco con un interesado (art. 23.2 Ley 40/2015):",["Hasta el segundo grado de consanguinidad","Dentro del cuarto grado de consanguinidad o segundo de afinidad","Hasta el tercer grado en todo caso","Solo el matrimonio"],1,"Art. 23.2.b Ley 40/2015.");
+T("proc","La recusación puede promoverse (art. 24 Ley 40/2015):",["Solo al inicio del procedimiento","En cualquier momento de la tramitación","Solo en vía de recurso","Antes de la audiencia"],1,"Art. 24.1 Ley 40/2015.");
+T("proc","La encomienda de gestión (art. 11 Ley 40/2015):",["Transfiere la titularidad de la competencia","No supone cesión de la titularidad de la competencia ni de sus elementos sustantivos","Equivale a una delegación","Solo cabe entre Ministerios"],1,"Art. 11.2 Ley 40/2015.");
+T("proc","Quórum para constituir válidamente un órgano colegiado (art. 17.2 Ley 40/2015):",["Presidente y Secretario solamente","Presidente, Secretario y la mitad, al menos, de sus miembros","Dos tercios","Mayoría absoluta sin Presidente"],1,"Art. 17.2 Ley 40/2015.");
+T("proc","Principios de la potestad sancionadora (Ley 40/2015). ¿Cuál NO lo es?",["Tipicidad","Irretroactividad","Proporcionalidad","Oportunidad"],3,"Los principios de los arts. 25 a 31 son legalidad, irretroactividad, tipicidad, responsabilidad, proporcionalidad, prescripción y non bis in idem.");
+T("proc","Duración máxima de los convenios, salvo prórroga (art. 49 Ley 40/2015):",["2 años","4 años","6 años","Indefinida"],1,"Art. 49.h: no superior a cuatro años, prorrogables hasta cuatro más.");
+// ===== RÉGIMEN LOCAL =====
+T("loc","Elementos del municipio (art. 11.2 LBRL):",["Territorio, población y organización","Territorio, Ayuntamiento y Alcalde","Población, presupuesto y Pleno","Término, vecinos y bienes"],0,"Art. 11.2 LBRL.");
+T("loc","Son vecinos del municipio:",["Todos los que residan en él","Los inscritos en el Padrón municipal","Los españoles nacidos allí","Los propietarios de inmuebles"],1,"Art. 15 LBRL: la condición de vecino se adquiere con la inscripción en el Padrón.");
+T("loc","Dato que NO figura obligatoriamente en el Padrón (art. 16 LBRL):",["Nombre y apellidos","Domicilio habitual","Religión","Lugar y fecha de nacimiento"],2,"Nadie está obligado a declarar sobre su religión (art. 16.2 CE).");
+T("loc","Órganos que existen en todos los Ayuntamientos (art. 20.1.a LBRL):",["Alcalde, Tenientes de Alcalde y Pleno","Alcalde, Pleno y Junta de Gobierno","Alcalde y Comisiones informativas","Pleno y Junta de Portavoces"],0,"Más la Comisión Especial de Cuentas (art. 20.1.e).");
+T("loc","La Junta de Gobierno Local existe obligatoriamente en municipios de:",["Más de 1.000 habitantes","Más de 5.000 habitantes","Más de 20.000","Más de 50.000"],1,"Art. 20.1.b LBRL: más de 5.000 habitantes, o menos si lo dispone el reglamento orgánico o el Pleno.");
+T("loc","Periodicidad mínima de los Plenos ordinarios en municipios de más de 20.000 habitantes:",["Cada mes","Cada dos meses","Cada tres meses","Cada semana"],0,"Art. 46.2.a LBRL: mensual en más de 20.000; cada dos meses entre 5.001 y 20.000; cada tres meses hasta 5.000.");
+T("loc","Un Pleno extraordinario a petición de concejales exige que lo solicite:",["Un tercio del número legal","La cuarta parte, al menos, del número legal de miembros","La mitad","Cualquier concejal"],1,"Art. 46.2.a LBRL. Se celebra en 15 días hábiles y ningún concejal puede pedir más de tres al año.");
+T("loc","Quórum de constitución del Pleno (art. 46.2.c LBRL):",["Mayoría absoluta","Un tercio del número legal, nunca inferior a tres","La mitad","Dos tercios"],1,"Debe mantenerse durante toda la sesión, con presencia del Presidente y el Secretario.");
+T("loc","Regla general para adoptar acuerdos en el Pleno (art. 47.1):",["Mayoría absoluta","Mayoría simple de los miembros presentes","Unanimidad","Dos tercios"],1,"Hay mayoría simple cuando los votos afirmativos superan a los negativos.");
+T("loc","Servicio que deben prestar TODOS los municipios (art. 26.1.a LBRL):",["Biblioteca pública","Alumbrado público, cementerio, recogida de residuos y limpieza viaria, entre otros","Transporte colectivo urbano","Protección civil"],1,"La biblioteca es para más de 5.000 habitantes, la protección civil para más de 20.000 y el transporte urbano para más de 50.000.");
+T("loc","El transporte colectivo urbano de viajeros es obligatorio en municipios de más de:",["5.000","20.000","50.000","100.000"],2,"Art. 26.1.d LBRL.");
+T("loc","Límites de las multas por infringir ordenanzas, salvo ley sectorial (art. 141 LBRL):",["Muy graves hasta 3.000 €, graves hasta 1.500 €, leves hasta 750 €","Muy graves 1.500, graves 750, leves 300","Hasta 600 € todas","Muy graves 6.000"],0,"Art. 141 LBRL.");
+T("loc","Las mancomunidades son:",["Asociaciones de municipios para ejecutar en común obras y servicios","Agrupaciones de provincias","Órganos de la Diputación","Entidades creadas por el Estado"],0,"Art. 44 LBRL.");
+T("loc","Las comarcas las crean:",["El Estado","Las Comunidades Autónomas","Las Diputaciones","Los municipios por sí solos"],1,"Art. 42 LBRL.");
+T("loc","Órganos de gobierno de la Diputación provincial (art. 32 LBRL):",["Presidente, Vicepresidentes, Junta de Gobierno y Pleno","Presidente y Asamblea","Gobernador civil y Pleno","Presidente y Consejo"],0,"Art. 32 LBRL.");
+T("loc","Ante una catástrofe o infortunio público, el Alcalde (art. 21.1.m LBRL):",["Debe esperar al acuerdo del Pleno","Puede adoptar personalmente, bajo su responsabilidad, las medidas necesarias, dando cuenta inmediata al Pleno","Solo puede solicitar ayuda al Gobierno","Debe delegar en la Junta de Gobierno"],1,"Art. 21.1.m LBRL.");
+T("loc","Alcalde que pierde una moción de censura: el candidato debe obtener:",["Mayoría simple","Mayoría absoluta del número legal de concejales","Dos tercios","Tres quintos"],1,"Art. 197 LOREG.");
+// ===== EMPLEO PÚBLICO =====
+T("emp","Clases de empleados públicos (art. 8 TREBEP):",["Funcionarios de carrera, interinos, personal laboral y personal eventual","Solo funcionarios y laborales","Funcionarios, contratados y becarios","Altos cargos y funcionarios"],0,"Art. 8.2 TREBEP.");
+T("emp","El personal eventual realiza funciones de:",["Policía","Confianza o asesoramiento especial","Auxilio administrativo","Interinidad"],1,"Art. 12 TREBEP.");
+T("emp","El subgrupo C1 exige la titulación de:",["Graduado en ESO","Bachiller o Técnico","Grado universitario","Técnico Superior"],1,"Art. 76 TREBEP.");
+T("emp","Situaciones administrativas de los funcionarios de carrera (art. 85):",["Servicio activo, servicios especiales, servicio en otras AAPP, excedencia y suspensión de funciones","Activo y jubilado","Activo, baja y excedencia","Servicio activo y segunda actividad"],0,"Art. 85.1 TREBEP. La segunda actividad de los policías locales es, en CLM, una modalidad de servicio activo.");
+T("emp","La excedencia voluntaria por interés particular exige haber prestado servicios efectivos durante:",["1 año","3 años","Los 5 años inmediatamente anteriores","10 años"],2,"Art. 89.2 TREBEP. No da derecho a retribuciones ni computa a efectos de trienios.");
+T("emp","La excedencia por cuidado de hijo tiene una duración máxima de:",["1 año","2 años","3 años","Hasta que cumpla 12 años"],2,"Art. 89.4 TREBEP: no superior a tres años por cada hijo.");
+T("emp","La suspensión firme de funciones no puede superar:",["2 años","4 años","6 años","10 años"],2,"Art. 90.1 TREBEP: seis años.");
+T("emp","Prescripción de las faltas disciplinarias (art. 97 TREBEP):",["Muy graves 3 años, graves 2 años, leves 6 meses","Todas 1 año","Muy graves 6 años","Muy graves 2, graves 1, leves 1 mes"],0,"Las sanciones prescriben a los 3 años (muy graves), 2 años (graves) y 1 año (leves).");
+T("emp","La separación del servicio de un funcionario solo puede imponerse por:",["Faltas graves","Faltas muy graves","Cualquier falta reiterada","Condena por delito leve"],1,"Art. 96.1.a TREBEP.");
+T("emp","Causa de pérdida de la condición de funcionario de carrera (art. 63):",["Excedencia","Jubilación total","Suspensión provisional","Servicios especiales"],1,"Art. 63: renuncia, pérdida de la nacionalidad, jubilación total, separación del servicio firme e inhabilitación firme.");
+T("emp","Edad de jubilación forzosa general del funcionario (art. 67.3 TREBEP):",["60 años","63 años","65 años","67 años"],2,"65 años. Los policías locales pueden anticipar la jubilación por el RD 1449/2018.");
+T("emp","Permiso por matrimonio o pareja de hecho (art. 48 TREBEP):",["10 días","15 días","20 días","1 mes"],1,"Art. 48.l: quince días.");
+T("emp","Según el art. 3.2 TREBEP, los Cuerpos de Policía Local se rigen:",["Solo por la LO 2/1986","Por el TREBEP y la legislación autonómica, salvo lo que establezca la LO 2/1986","Solo por normas municipales","Por el Estatuto de los Trabajadores"],1,"Art. 3.2 TREBEP.");
+
+// ===== FUERZAS Y CUERPOS DE SEGURIDAD (LO 2/1986) =====
+T("pol","Según la LO 2/1986, son Fuerzas y Cuerpos de Seguridad:",["Solo el CNP y la Guardia Civil","Las del Estado, los Cuerpos de Policía de las CCAA y los de las Corporaciones Locales","Además, la seguridad privada","Las FFAA y el CNP"],1,"Art. 2 LO 2/1986.");
+T("pol","El Cuerpo Nacional de Policía es:",["Instituto armado de naturaleza militar","Instituto armado de naturaleza civil","Cuerpo civil no armado","Fuerza auxiliar del Ejército"],1,"Art. 9.a LO 2/1986. La Guardia Civil es instituto armado de naturaleza militar (9.b).");
+T("pol","Las Policías Locales son, según la LO 2/1986:",["Institutos armados de naturaleza civil, con estructura y organización jerarquizada","Cuerpos de naturaleza militar","Personal laboral municipal","Agentes auxiliares sin carácter de autoridad"],0,"Art. 52.1 LO 2/1986.");
+T("pol","Los miembros de las Fuerzas y Cuerpos de Seguridad en el ejercicio de sus funciones tienen la consideración de:",["Agentes de la autoridad","Autoridad en todo caso","Funcionarios sin más","Auxiliares de la Justicia"],0,"Art. 7.1 LO 2/1986. Las agresiones a ellos se castigan como atentado.");
+T("pol","Los miembros de las FCS deben usar las armas (art. 5.2.d LO 2/1986):",["Siempre que lo consideren conveniente","Solo en situaciones de riesgo racionalmente grave para su vida, su integridad o las de terceros, o grave riesgo para la seguridad ciudadana","Cuando se lo ordene un superior","Nunca en zona urbana"],1,"Con arreglo a los principios de congruencia, oportunidad y proporcionalidad.");
+T("pol","Las Policías Locales actúan, por regla general (art. 51.3 LO 2/1986):",["En toda la provincia","En el término municipal, salvo emergencias y previo requerimiento de las autoridades competentes","En toda la Comunidad Autónoma","En todo el territorio nacional"],1,"Art. 51.3 LO 2/1986.");
+T("pol","Función de la Policía Local según el art. 53.1 LO 2/1986:",["Expedir el DNI","Instruir atestados por accidentes de circulación dentro del casco urbano","Control de entrada de extranjeros","Resguardo fiscal del Estado"],1,"Art. 53.1.c LO 2/1986.");
+T("pol","La Policía Local participa en funciones de policía judicial:",["Nunca","En la forma establecida en el art. 29.2 LO 2/1986","Solo en delitos leves","Exclusivamente en tráfico"],1,"Art. 53.1.e LO 2/1986: colaboran con las FCSE como colaboradoras de la policía judicial.");
+T("pol","Las actuaciones de la Policía Local en prevención de delitos y vigilancia (art. 53.2):",["Son secretas","Deben comunicarse a las Fuerzas y Cuerpos de Seguridad del Estado competentes","Requieren autorización judicial","No pueden realizarse"],1,"Art. 53.2 LO 2/1986.");
+T("pol","Las Juntas Locales de Seguridad pueden constituirse en municipios:",["De más de 50.000 habitantes","Con Cuerpo de Policía propio","Capitales de provincia solamente","Cualquiera, aunque no tenga policía"],1,"Art. 54 LO 2/1986. La preside el Alcalde, salvo que asista el Delegado o Subdelegado del Gobierno, en cuyo caso la presidencia es compartida.");
+T("pol","Es competencia de la Guardia Civil (art. 12.1.B LO 2/1986):",["Expedición del DNI","Control de armas y explosivos","Control de la seguridad privada","Inspección del juego"],1,"Además, el resguardo fiscal, el tráfico interurbano, la custodia de costas y fronteras, y la naturaleza.");
+T("pol","Es competencia del Cuerpo Nacional de Policía (art. 12.1.A):",["Tráfico interurbano","Expedición del DNI y pasaportes","Resguardo fiscal","Armas"],1,"También la extranjería, el control de la seguridad privada y la inspección del juego.");
+T("pol","Al efectuar una detención, los miembros de las FCS deben:",["Identificarse debidamente como tales","No identificarse","Esperar a la orden judicial","Usar siempre los grilletes"],0,"Principios básicos del art. 5 LO 2/1986.");
+T("pol","¿Tienen derecho de huelga los policías locales?",["Sí, sin límites","No","Sí, con servicios mínimos","Solo la Escala Básica"],1,"Al aplicárseles los principios de la LO 2/1986, no pueden ejercer el derecho de huelga ni acciones sustitutivas que alteren el normal funcionamiento del servicio.");
+T("pol","En municipios sin Cuerpo de Policía Local, la custodia y vigilancia de bienes, servicios e instalaciones la ejercen:",["La Guardia Civil exclusivamente","Personal denominado guardas, vigilantes, agentes, alguaciles o análogos","Vigilantes de seguridad privada","Protección Civil"],1,"Art. 51.2 LO 2/1986.");
+// ===== LO 4/2015 SEGURIDAD CIUDADANA =====
+T("pol","Si una persona no puede ser identificada en el lugar, los agentes pueden requerirle que les acompañe a dependencias por el tiempo imprescindible, que no puede superar:",["2 horas","6 horas","12 horas","24 horas"],1,"Art. 16.4 LO 4/2015.");
+T("pol","Prescripción de las infracciones de la LO 4/2015 (art. 38):",["Leves 6 meses, graves 1 año, muy graves 2 años","Leves 1 año, graves 2, muy graves 3","Todas al año","Leves 3 meses, graves 6, muy graves 1 año"],0,"Art. 38.1 LO 4/2015.");
+T("pol","Multas por infracciones graves de la LO 4/2015:",["100 a 600 €","601 a 30.000 €","30.001 a 600.000 €","Hasta 3.000 €"],1,"Art. 39.1: leves 100-600 €, graves 601-30.000 €, muy graves 30.001-600.000 €.");
+T("pol","Consumir o tener drogas ilegales en lugares públicos, aunque no sea para el tráfico, es infracción:",["Leve","Grave","Muy grave","No es infracción"],1,"Art. 36.16 LO 4/2015.");
+T("pol","Desobedecer o resistirse a la autoridad o a sus agentes, sin que sea delito, es infracción:",["Leve","Grave","Muy grave","Solo penal"],1,"Art. 36.6 LO 4/2015.");
+T("pol","Las faltas de respeto y consideración a los agentes en el ejercicio de sus funciones, sin ser delito, son infracción:",["Leve","Grave","Muy grave","No sancionable"],0,"Art. 37.4 LO 4/2015.");
+// ===== CÓDIGO PENAL =====
+T("pen","Son delitos graves los castigados con pena de prisión:",["Superior a 5 años","De 3 meses a 5 años","Superior a 2 años","Superior a 10 años"],0,"Art. 33.2.a CP. De tres meses a cinco años es pena menos grave.");
+T("pen","Las acciones u omisiones imprudentes solo se castigan:",["Siempre","Cuando la ley lo disponga expresamente","Si hay resultado de muerte","Si son graves"],1,"Art. 12 CP.");
+T("pen","Se consideran autores, además de quienes realizan el hecho (art. 28 CP):",["Los cómplices","Los inductores y los cooperadores necesarios","Los encubridores","Los testigos"],1,"Art. 28 CP.");
+T("pen","Requisitos de la legítima defensa (art. 20.4 CP):",["Agresión ilegítima, necesidad racional del medio empleado y falta de provocación suficiente","Solo agresión ilegítima","Agresión y miedo","Que el agresor sea mayor de edad"],0,"Art. 20.4 CP.");
+T("pen","Es circunstancia agravante (art. 22 CP):",["La confesión","La alevosía","La reparación del daño","Las dilaciones indebidas"],1,"Las demás son atenuantes (art. 21).");
+T("pen","Confesar la infracción a las autoridades antes de saber que el procedimiento judicial se dirige contra uno es:",["Eximente","Atenuante","Agravante","Irrelevante"],1,"Art. 21.4 CP.");
+T("pen","Duración de la pena de prisión, con carácter general (art. 36 CP):",["Mínimo 3 meses y máximo 20 años, salvo excepciones","1 mes a 30 años","6 meses a 40 años","3 meses a 10 años"],0,"Art. 36.2 CP, sin contar la prisión permanente revisable.");
+T("pen","Pena del homicidio (art. 138 CP):",["Prisión de 5 a 10 años","De 10 a 15 años","De 15 a 25 años","De 20 a 30 años"],1,"El asesinato (art. 139) se castiga con 15 a 25 años.");
+T("pen","Pena de las lesiones del tipo básico (art. 147.1 CP):",["Prisión de 3 meses a 3 años o multa de 6 a 12 meses","Prisión de 1 a 5 años","Multa de 1 a 3 meses","Prisión de 6 meses a 2 años"],0,"Se exige que la lesión requiera tratamiento médico o quirúrgico, además de la primera asistencia.");
+T("pen","Omitir el socorro a una persona desamparada en peligro manifiesto y grave, pudiendo hacerlo sin riesgo:",["No es delito","Multa de 3 a 12 meses","Prisión de 1 a 3 años","Solo sanción administrativa"],1,"Art. 195.1 CP.");
+T("pen","Allanamiento de morada sin violencia ni intimidación (art. 202.1 CP):",["Multa","Prisión de 6 meses a 2 años","Prisión de 1 a 4 años","Prisión de 2 a 5 años"],1,"Con violencia o intimidación, prisión de 1 a 4 años y multa (art. 202.2).");
+T("pen","El robo se distingue del hurto por:",["El valor de lo sustraído","El empleo de fuerza en las cosas o violencia o intimidación en las personas","El lugar","La reincidencia"],1,"Art. 237 CP.");
+T("pen","Pena del robo con violencia o intimidación (art. 242.1 CP):",["Prisión de 1 a 3 años","De 2 a 5 años","De 3 a 6 años","Multa"],1,"Se impone la pena superior si se usan armas u otros medios igual de peligrosos.");
+T("pen","Pena del robo con fuerza en las cosas (art. 240.1 CP):",["Prisión de 1 a 3 años","De 2 a 5 años","Multa de 6 a 12 meses","De 6 meses a 1 año"],0,"En casa habitada o local abierto al público, la pena es de 2 a 5 años (art. 241).");
+T("pen","Los daños son delito leve si el perjuicio no supera:",["300 €","400 €","600 €","1.000 €"],1,"Art. 263.1 CP.");
+T("pen","Conducir a más de 60 km/h por encima del límite en vía urbana u 80 km/h en vía interurbana es:",["Infracción muy grave","Delito del art. 379.1 CP","Infracción grave","Delito solo si hay accidente"],1,"Art. 379.1 CP.");
+T("pen","Conducir sin haber obtenido nunca el permiso, o habiéndolo perdido por pérdida total de puntos, es:",["Infracción grave","Infracción muy grave","Delito del art. 384 CP","No sancionable"],2,"Art. 384 CP.");
+T("pen","Delito de atentado contra la autoridad y sus agentes:",["Art. 550 CP","Art. 138 CP","Art. 404 CP","Art. 248 CP"],0,"Arts. 550 y siguientes CP.");
+T("pen","El quebrantamiento de condena se regula en el:",["Art. 468 CP","Art. 450 CP","Art. 556 CP","Art. 410 CP"],0,"Art. 468 CP.");
+T("pen","La autoridad o funcionario que, por razón de su cargo, solicita o recibe una dádiva para realizar un acto contrario a su cargo comete:",["Malversación","Cohecho","Prevaricación","Fraude"],1,"Art. 419 CP.");
+T("pen","Edad a partir de la cual se exige responsabilidad conforme a la Ley de responsabilidad penal del menor (LO 5/2000):",["12 años","14 años","16 años","18 años"],1,"De 14 a 17 años, con la LO 5/2000.");
+T("pen","El maltrato de obra o la lesión de menor gravedad sobre quien es o ha sido esposa o mujer unida por relación de afectividad, aun sin convivencia, se regula en el:",["Art. 147","Art. 153.1 CP","Art. 173","Art. 620"],1,"Art. 153.1 CP: prisión de 6 meses a 1 año o trabajos en beneficio de la comunidad, entre otras penas.");
+// ===== LECRIM =====
+T("pen","Cualquier persona puede detener (art. 490 LECrim):",["A nadie","Al que intente cometer un delito en el momento de ir a cometerlo y al delincuente in fraganti, entre otros","Solo a quien le haya agredido","A cualquier sospechoso"],1,"Art. 490 LECrim.");
+T("pen","El abogado del detenido debe acudir al centro de detención en el plazo máximo de:",["1 hora","3 horas desde que recibe el encargo","8 horas","24 horas"],1,"Art. 520.5 LECrim.");
+T("pen","Derecho del detenido según el art. 520 LECrim:",["Guardar silencio y no declarar contra sí mismo","Elegir al agente que lo custodia","Recibir visitas libremente","Salir bajo palabra"],0,"También tiene derecho a abogado, a avisar a un familiar, a intérprete y a ser reconocido por un médico.");
+T("pen","La policía judicial no puede dejar pasar, sin dar conocimiento a la autoridad judicial o al Fiscal de las diligencias practicadas, más de:",["12 horas","24 horas","48 horas","72 horas"],1,"Art. 295 LECrim.");
+T("pen","El juicio rápido se aplica a delitos castigados con pena privativa de libertad no superior a:",["2 años","3 años","5 años","9 años"],2,"Art. 795.1 LECrim, si se cumplen el resto de requisitos.");
+T("pen","Quien presencie la comisión de un delito público está obligado a:",["Nada","Ponerlo en conocimiento del juez, fiscal, tribunal o funcionario de policía más próximo","Detener al autor","Grabarlo"],1,"Art. 259 LECrim.");
+T("pen","El procedimiento de habeas corpus lo resuelve:",["El Juez de Instrucción del lugar donde se encuentre el privado de libertad, en 24 horas","El Tribunal Constitucional","La Audiencia Provincial en 72 horas","El Fiscal"],0,"Arts. 2 y 7 LO 6/1984.");
+T("pen","La orden de protección a víctimas de violencia doméstica se regula en el:",["Art. 544 ter LECrim","Art. 520 LECrim","Art. 13 LECrim","Art. 795 LECrim"],0,"Art. 544 ter LECrim.");
+T("pen","La norma que regula la Policía Judicial es el:",["RD 769/1987, de 19 de junio","RD 1087/2010","RD 1428/2003","RD 818/2009"],0,"RD 769/1987, sobre regulación de la Policía Judicial.");
+// ===== TRÁFICO =====
+T("tra","El texto refundido vigente de la Ley de Tráfico se aprobó por:",["RDL 339/1990","RDL 6/2015, de 30 de octubre","Ley 18/2009","RD 1428/2003"],1,"RDL 6/2015.");
+T("tra","El Reglamento General de Circulación es el:",["RD 1428/2003","RD 818/2009","RD 2822/1998","RD 320/1994"],0,"RD 1428/2003. El 818/2009 es el de Conductores y el 2822/1998 el de Vehículos.");
+T("tra","Velocidad máxima genérica en vías urbanas de un único carril por sentido:",["20 km/h","30 km/h","40 km/h","50 km/h"],1,"Art. 50 RGC (desde 2021): 20 en plataforma única, 30 con un carril por sentido y 50 con dos o más.");
+T("tra","Velocidad máxima de un turismo en autopista y autovía:",["100 km/h","110 km/h","120 km/h","130 km/h"],2,"Art. 48 RGC.");
+T("tra","Velocidad máxima de un turismo en carretera convencional:",["80 km/h","90 km/h","100 km/h","110 km/h"],1,"Desde 2019, 90 km/h.");
+T("tra","Tasa máxima de alcohol de un conductor general:",["0,15 mg/l en aire","0,25 mg/l en aire (0,5 g/l en sangre)","0,30 mg/l","0,50 mg/l"],1,"Art. 20 RGC. Profesionales y noveles: 0,15 mg/l en aire (0,3 g/l en sangre).");
+T("tra","Entre las dos pruebas de alcoholemia en aire espirado debe pasar un tiempo:",["Máximo de 5 minutos","Mínimo de 10 minutos","Mínimo de 30 minutos","Ninguno"],1,"Art. 23.1 RGC.");
+T("tra","Cuantía general de las multas de tráfico (art. 80 RDL 6/2015):",["Leves hasta 100 €, graves 200 €, muy graves 500 €","Leves 50, graves 150, muy graves 300","Leves 100, graves 300, muy graves 600","Todas 200 €"],0,"Hay excepciones, como el alcohol o la velocidad.");
+T("tra","Reducción por pronto pago de una multa de tráfico:",["20 % en 10 días","50 % en 20 días naturales","30 % en un mes","No hay reducción"],1,"Art. 94 RDL 6/2015.");
+T("tra","Prescripción de las infracciones de tráfico:",["Leves 3 meses; graves y muy graves 6 meses","Todas 1 año","Leves 6 meses, graves 1 año","Leves 1 mes"],0,"Art. 112.1 RDL 6/2015.");
+T("tra","Prescripción de las sanciones de tráfico una vez firmes:",["1 año","2 años","4 años","5 años"],2,"Art. 112.2 RDL 6/2015.");
+T("tra","Máximo de puntos que se pueden acumular en el permiso:",["12","14","15","20"],2,"15 puntos, con las bonificaciones por buena conducta.");
+T("tra","Conducir con más de 0,50 mg/l de alcohol en aire sin llegar al delito se sanciona con:",["500 € y 4 puntos","1.000 € y 6 puntos","200 € y 3 puntos","Solo multa"],1,"Entre 0,25 y 0,50 mg/l son 500 € y 4 puntos. Por encima de 0,60 mg/l es delito.");
+T("tra","Usar el teléfono móvil sujetándolo con la mano mientras se conduce:",["100 € y 3 puntos","200 € y 6 puntos","200 € y 3 puntos","500 € y 4 puntos"],1,"Tras la reforma de 2022 (Ley 18/2021), se retiran 6 puntos.");
+T("tra","No usar el cinturón de seguridad:",["200 € y 4 puntos","100 € y 2 puntos","200 € y 3 puntos","500 € y 6 puntos"],0,"Infracción grave con retirada de 4 puntos.");
+T("tra","Edad mínima para el permiso AM:",["14","15","16","18"],1,"Ciclomotores y cuadriciclos ligeros: 15 años.");
+T("tra","Edad mínima para el permiso D:",["18","21","23","24"],3,"D: 24 años (con excepciones por formación CAP). C: 21 años.");
+T("tra","Vigencia del permiso B hasta los 65 años:",["5 años","10 años","15 años","Indefinida"],1,"10 años; a partir de 65, 5 años.");
+T("tra","La primera ITV de un turismo nuevo se pasa a los:",["2 años","3 años","4 años","5 años"],2,"A los 4 años, después cada 2 años hasta los 10, y luego anual.");
+T("tra","La señal de STOP es la:",["R-1","R-2","R-3","R-101"],1,"R-2. La R-1 es ceda el paso.");
+T("tra","La señal R-101 indica:",["Circulación prohibida","Entrada prohibida","Velocidad máxima","Estacionamiento prohibido"],1,"R-101 entrada prohibida; R-100 circulación prohibida.");
+T("tra","Orden de prioridad entre señales (art. 133 RGC):",["Semáforos, agentes, verticales","Agentes, señalización circunstancial que modifica el régimen normal, semáforos, señales verticales y marcas viales","Marcas viales, verticales, semáforos","Verticales, agentes, semáforos"],1,"Art. 133 RGC.");
+T("tra","Los menores con estatura igual o inferior a 135 cm deben viajar:",["En el asiento delantero","En los asientos traseros con un sistema de retención infantil homologado, con excepciones","Sin cinturón","En brazos de un adulto"],1,"Art. 117 RGC.");
+T("tra","Uso del casco por ciclistas:",["Nunca obligatorio","Obligatorio para menores de 16 años en todas las vías y para todos en vías interurbanas, con excepciones","Solo en ciudad","Solo para menores de 12"],1,"Art. 118 RGC.");
+T("tra","Al adelantar a ciclistas en carretera, la separación lateral mínima es:",["1 m","1,5 m","2 m","50 cm"],1,"Art. 85 RGC: al menos 1,5 metros.");
+T("tra","Tras la venta de un vehículo, el vendedor debe comunicarlo a Tráfico en:",["5 días","10 días","15 días","30 días"],1,"Art. 32 RGV: diez días. El comprador debe pedir el cambio de titularidad en treinta días.");
+T("tra","La Administración puede tratar como residuo un vehículo estacionado en el mismo lugar con desperfectos que impidan moverlo o sin placas durante más de:",["15 días","1 mes","2 meses","6 meses"],1,"Art. 106.1.b RDL 6/2015.");
+T("tra","¿A quién corresponde instruir el atestado de un accidente de tráfico ocurrido dentro del casco urbano?",["A la Guardia Civil","A la Policía Local","A la DGT","Al juzgado directamente"],1,"Art. 53.1.c LO 2/1986.");
+T("tra","Máximo de puntos que pueden retirarse por varias infracciones cometidas a la vez:",["6","8","12","15"],1,"8 puntos, salvo infracciones muy graves de alcohol, drogas o velocidad.");
+T("tra","Tras perder todos los puntos, un conductor no profesional puede obtener un nuevo permiso a los:",["3 meses","6 meses","1 año","2 años"],1,"6 meses (3 meses si es profesional), tras un curso y un examen. (Era pregunta de reserva en el examen unificado de 2025.)");
+// ===== IGUALDAD, DATOS, PROTECCIÓN CIVIL =====
+T("otr","La ley de protección integral contra la violencia de género es la:",["LO 1/2004, de 28 de diciembre","LO 3/2007","Ley 27/2003","LO 10/2022"],0,"LO 1/2004.");
+T("otr","Discriminación indirecta por razón de sexo (art. 6.2 LO 3/2007):",["Trato menos favorable explícito por ser mujer u hombre","Una disposición, criterio o práctica aparentemente neutros que ponen en desventaja a personas de un sexo","Acoso sexual","Toda diferencia de trato"],1,"Salvo que pueda justificarse objetivamente con una finalidad legítima.");
+T("otr","El sistema que integra el seguimiento de los casos de violencia de género por el Ministerio del Interior se llama:",["VioGén","SIRDEE","ATENPRO","SIS"],0,"VioGén.");
+T("otr","La ley orgánica española de protección de datos es la:",["LO 15/1999","LO 3/2018, de 5 de diciembre","LO 1/1982","Ley 34/2002"],1,"LO 3/2018 (LOPDGDD), que complementa al RGPD.");
+T("otr","Los datos relativos a la salud son, según el RGPD:",["Datos ordinarios","Categorías especiales de datos","Datos públicos","Datos anónimos"],1,"Art. 9 RGPD.");
+T("otr","La ley estatal del Sistema Nacional de Protección Civil es la:",["Ley 2/1985","Ley 17/2015, de 9 de julio","LO 4/1981","Ley 31/1995"],1,"Ley 17/2015, que sustituyó a la Ley 2/1985.");
+T("otr","La ley de prevención de riesgos laborales es la:",["Ley 31/1995","Ley 7/1985","RDL 5/2015","Ley 17/2015"],0,"Ley 31/1995, de 8 de noviembre.");
+T("otr","La ley orgánica de protección integral a la infancia y la adolescencia frente a la violencia es la:",["LO 1/1996","LO 8/2021","LO 5/2000","Ley 26/2015"],1,"LO 8/2021, de 4 de junio.");
+
+// ===== CE: CORONA, GOBIERNO, ORGANIZACIÓN TERRITORIAL, DERECHOS =====
+T("ce","La persona del Rey (art. 56.3 CE):",["Es responsable ante las Cortes","Es inviolable y no está sujeta a responsabilidad; sus actos necesitan refrendo","Responde ante el Tribunal Supremo","Responde ante el Gobierno"],1,"Art. 56.3 CE.");
+T("ce","Los actos del Rey los refrendan:",["El Presidente del Gobierno y, en su caso, los Ministros competentes","El Defensor del Pueblo","El Presidente del TC","El Jefe de la Casa del Rey"],0,"Art. 64.1 CE. La propuesta y el nombramiento del Presidente del Gobierno y la disolución del art. 99 los refrenda el Presidente del Congreso.");
+T("ce","Si el Rey es menor de edad, ejerce la Regencia:",["El Presidente del Gobierno","El padre o la madre del Rey y, en su defecto, el pariente mayor de edad más próximo a suceder","Las Cortes","El Consejo de Estado"],1,"Art. 59.1 CE.");
+T("ce","El Gobierno se compone de:",["Presidente y Ministros","Presidente, en su caso Vicepresidentes, Ministros y los demás miembros que establezca la ley","Presidente y Secretarios de Estado","Ministros y Subsecretarios"],1,"Art. 98.1 CE.");
+T("ce","Si en la investidura no se obtiene la confianza, pasados dos meses desde la primera votación sin ningún candidato investido, el Rey:",["Nombra Presidente al más votado","Disuelve ambas Cámaras y convoca elecciones con el refrendo del Presidente del Congreso","Nombra un Gobierno técnico","Convoca un referéndum"],1,"Art. 99.5 CE.");
+T("ce","El Consejo de Estado es:",["El supremo órgano consultivo del Gobierno","Un órgano del Poder Judicial","Una Cámara legislativa","El órgano de gobierno de los jueces"],0,"Art. 107 CE.");
+T("ce","Según el art. 117 CE, la justicia emana:",["Del Rey","Del pueblo, y se administra en nombre del Rey por Jueces y Magistrados","Del Gobierno","Del CGPJ"],1,"Art. 117.1 CE.");
+T("ce","Los ciudadanos pueden participar en la Administración de Justicia mediante:",["El jurado, la acción popular y los tribunales consuetudinarios y tradicionales","Solo el jurado","Las asociaciones","Los colegios profesionales"],0,"Art. 125 CE.");
+T("ce","Pueden acceder a la autonomía por la vía del art. 143 CE:",["Solo las nacionalidades históricas","Las provincias limítrofes con características históricas, culturales y económicas comunes, los territorios insulares y las provincias con entidad regional histórica","Cualquier municipio","Las Diputaciones"],1,"Art. 143.1 CE.");
+T("ce","La seguridad pública es competencia:",["Exclusiva del Estado, sin perjuicio de que las CCAA puedan crear policías propias","Exclusiva de las CCAA","Exclusiva de los municipios","Compartida a partes iguales"],0,"Art. 149.1.29.ª CE.");
+T("ce","El derecho a la libertad ideológica, religiosa y de culto se recoge en el:",["Art. 14","Art. 16","Art. 18","Art. 20"],1,"Art. 16 CE: nadie puede ser obligado a declarar sobre su ideología, religión o creencias.");
+T("ce","Igualdad ante la ley y prohibición de discriminación:",["Art. 9","Art. 14","Art. 15","Art. 23"],1,"Art. 14 CE.");
+T("ce","El derecho a la tutela judicial efectiva y a la presunción de inocencia está en el:",["Art. 17","Art. 24","Art. 25","Art. 53"],1,"Art. 24 CE.");
+T("ce","Según el art. 25.3 CE, la Administración civil:",["Puede imponer penas de prisión menores de 6 meses","No puede imponer sanciones que, directa o subsidiariamente, impliquen privación de libertad","Puede detener hasta 72 horas","Puede imponer trabajos forzados"],1,"Art. 25.3 CE.");
+T("ce","El derecho de petición se reconoce en el:",["Art. 23","Art. 29","Art. 33","Art. 105"],1,"Art. 29 CE; los miembros de las FFAA e institutos armados solo pueden ejercerlo individualmente.");
+T("ce","El Título VIII de la Constitución trata de:",["El Poder Judicial","La organización territorial del Estado","El Tribunal Constitucional","La reforma constitucional"],1,"Arts. 137 a 158.");
+T("ce","El Título X de la Constitución regula:",["El Tribunal Constitucional","La reforma constitucional","La Corona","Economía y Hacienda"],1,"Arts. 166 a 169. El Título IX es el del Tribunal Constitucional.");
+T("ce","La Constitución tiene:",["169 artículos","179 artículos","159 artículos","200 artículos"],0,"169 artículos, 4 disposiciones adicionales, 9 transitorias, 1 derogatoria y 1 final.");
+T("ce","La Constitución se ha reformado:",["Nunca","En 1992 (art. 13.2), 2011 (art. 135) y 2024 (art. 49)","Solo en 2011","En 1992 y 2006"],1,"Tres reformas: sufragio pasivo de extranjeros en elecciones municipales, estabilidad presupuestaria y la terminología sobre personas con discapacidad.");
+// ===== MÁS PROCEDIMIENTO Y RÉGIMEN LOCAL =====
+T("proc","El recurso extraordinario de revisión por error de hecho que resulte de los documentos del expediente se interpone en el plazo de:",["3 meses","1 año","4 años desde la notificación","No hay plazo"],2,"Art. 125.2 Ley 39/2015. En las demás causas, 3 meses desde que se conoce el documento o la sentencia firme.");
+T("proc","Contra los actos firmes en vía administrativa solo cabe:",["Recurso de alzada","Recurso extraordinario de revisión, en los casos del art. 125.1","Reposición","Ningún recurso"],1,"Art. 125.1 Ley 39/2015.");
+T("proc","Los actos que no ponen fin a la vía administrativa se recurren en:",["Reposición","Alzada","Revisión","Contencioso directamente"],1,"Art. 121 Ley 39/2015.");
+T("proc","Los interesados pueden presentar escritos, además de en registros electrónicos, en:",["Solo en el Ayuntamiento de su domicilio","Oficinas de Correos, representaciones diplomáticas y oficinas de asistencia en materia de registros, entre otros lugares","Comisarías","Juzgados"],1,"Art. 16.4 Ley 39/2015.");
+T("proc","La caducidad de un procedimiento iniciado de oficio:",["Impide iniciar uno nuevo","No produce por sí sola la prescripción de las acciones de la Administración","Supone silencio estimatorio","Extingue la infracción"],1,"Art. 95.3 Ley 39/2015.");
+T("proc","El acuerdo de iniciación de un procedimiento sancionador se notifica:",["Solo al denunciante","Al instructor, al inculpado y, en su caso, a los interesados","Solo al inculpado","A nadie"],1,"Art. 64.1 Ley 39/2015.");
+T("proc","En el procedimiento sancionador, la presentación de una denuncia:",["Convierte al denunciante en interesado siempre","No confiere por sí sola la condición de interesado","Inicia automáticamente el procedimiento","Obliga a sancionar"],1,"Art. 62.5 Ley 39/2015.");
+T("loc","Concepto de bando municipal:",["Norma general aprobada por el Pleno","Acto del Alcalde para recordar o desarrollar normas, informar o, en emergencias, adoptar medidas","Sinónimo de ordenanza","Acuerdo de la Junta de Gobierno"],1,"Los bandos son competencia del Alcalde (art. 21.1.e LBRL).");
+T("loc","Los Tenientes de Alcalde los nombra y cesa libremente:",["El Pleno","El Alcalde, de entre los miembros de la Junta de Gobierno o, si no existe, de entre los concejales","La Junta de Gobierno","El Secretario"],1,"Art. 23.3 LBRL.");
+T("loc","En los municipios de gran población, la Junta de Gobierno Local:",["Solo puede tener concejales","Puede incluir miembros que no sean concejales, sin superar un tercio de sus miembros además del Alcalde","No existe","La preside el Secretario"],1,"Art. 126.2 LBRL.");
+T("loc","El término municipal es:",["El territorio en que el Ayuntamiento ejerce sus competencias","El casco urbano","La suma de pedanías","El suelo urbanizable"],0,"Art. 12.1 LBRL.");
+T("loc","El servicio de policía local, ¿es un servicio mínimo obligatorio en todos los municipios según el art. 26 LBRL?",["Sí, en todos","No; el art. 26 no lo incluye, aunque la seguridad en lugares públicos es competencia municipal (art. 25)","Solo en más de 5.000","Solo en capitales"],1,"La seguridad en lugares públicos y la ordenación del tráfico son competencias propias del art. 25 LBRL, pero no figuran entre los servicios mínimos del art. 26.");
+T("loc","Es competencia propia del municipio (art. 25.2 LBRL):",["Policía local, protección civil, prevención y extinción de incendios","Expedición del DNI","Seguridad privada","Tráfico interurbano"],0,"Art. 25.2.f LBRL.");
+// ===== MÁS PENAL =====
+T("pen","Amenazar a otro con causarle un mal constitutivo de delito se regula en el:",["Art. 169 CP","Art. 172 CP","Art. 147 CP","Art. 620 CP"],0,"Art. 169 CP (amenazas). Las coacciones están en el art. 172.");
+T("pen","Impedir a otro con violencia hacer lo que la ley no prohíbe, u obligarle a hacer lo que no quiere, es delito de:",["Amenazas","Coacciones","Detención ilegal","Atentado"],1,"Art. 172 CP.");
+T("pen","La resistencia o desobediencia grave a la autoridad o sus agentes en el ejercicio de sus funciones se castiga en el:",["Art. 550 CP","Art. 556 CP","Art. 468 CP","Art. 410 CP"],1,"Art. 556 CP: prisión de 3 meses a 1 año o multa de 6 a 18 meses.");
+T("pen","Conducir con temeridad manifiesta poniendo en concreto peligro la vida o integridad de las personas es delito:",["Art. 379","Art. 380 CP","Art. 383","Art. 384"],1,"Art. 380 CP: prisión de 6 meses a 2 años y privación del permiso de 1 a 6 años.");
+T("pen","Abandonar el lugar de un accidente causado por imprudencia del conductor con resultado de muerte o lesiones graves:",["No es delito","Delito del art. 382 bis CP","Solo infracción muy grave","Omisión del deber de socorro siempre"],1,"Art. 382 bis CP, introducido por la LO 2/2019.");
+T("pen","El tráfico de drogas se castiga en el:",["Art. 368 CP","Art. 248 CP","Art. 379 CP","Art. 550 CP"],0,"Art. 368 CP.");
+T("pen","Pena de la estafa básica (art. 249 CP) cuando la cuantía supera 400 €:",["Prisión de 6 meses a 3 años","Multa de 1 a 3 meses","Prisión de 1 a 6 años","Prisión de 3 a 6 años"],0,"Si no supera 400 € es delito leve con multa de 1 a 3 meses.");
+T("pen","La autoridad o funcionario que, faltando a su obligación, deja intencionadamente de perseguir delitos o a sus responsables comete el delito del:",["Art. 404","Art. 408 CP","Art. 419","Art. 432"],1,"Art. 408 CP: omisión del deber de perseguir delitos.");
+T("pen","Usurpación de funciones públicas (atribuirse carácter oficial y ejercer actos propios de autoridad):",["Art. 402 CP","Art. 550","Art. 248","Art. 384"],0,"Art. 402 CP.");
+T("pen","Detención ilegal cometida por particular (art. 163.1 CP):",["Prisión de 1 a 3 años","Prisión de 4 a 6 años","Multa","Prisión de 6 a 12 años"],1,"Art. 163.1 CP: prisión de 4 a 6 años.");
+T("pen","Si un particular detiene a alguien para presentarlo inmediatamente a la autoridad, en los casos permitidos por la ley:",["Comete detención ilegal","No comete delito; si fuera fuera de esos casos, multa de 3 a 6 meses","Comete coacciones","Comete usurpación"],1,"Art. 163.4 CP.");
+T("pen","Tenencia ilícita de armas de fuego reglamentadas sin licencias o permisos:",["Art. 564 CP","Art. 368 CP","Art. 550 CP","No es delito"],0,"Art. 564 CP.");
+T("pen","Las penas pueden ser, por su naturaleza:",["Privativas de libertad, privativas de otros derechos y multa","Solo prisión y multa","Leves y graves","Principales y accesorias únicamente"],0,"Art. 32 CP.");
+T("pen","El sistema de multa del Código Penal es, por regla general:",["Cuantía fija","Días-multa","Proporcional al patrimonio","Solo en euros"],1,"Art. 50 CP: cuota diaria de 2 a 400 euros (de 30 a 5.000 para personas jurídicas).");
+T("pen","Las personas jurídicas pueden ser penalmente responsables:",["Nunca","En los supuestos previstos en el Código Penal (art. 31 bis)","Siempre","Solo las públicas"],1,"Art. 31 bis CP, desde 2010.");
+// ===== MÁS TRÁFICO =====
+T("tra","Velocidad máxima de un ciclomotor:",["25 km/h","45 km/h","50 km/h","60 km/h"],1,"Art. 48 RGC.");
+T("tra","Velocidad máxima de un vehículo de movilidad personal (patinete eléctrico):",["15 km/h","25 km/h","30 km/h","45 km/h"],1,"Los VMP están limitados por construcción a 25 km/h. No pueden circular por aceras ni por vías interurbanas.");
+T("tra","Estacionar en un paso para peatones es infracción:",["Leve","Grave","Muy grave","No sancionable"],1,"Estacionar en pasos para peatones, carriles bus o plazas de personas con discapacidad sin autorización es grave.");
+T("tra","Conducir de forma temeraria (sin ser delito) es infracción:",["Leve","Grave","Muy grave","Solo penal"],2,"Art. 77 RDL 6/2015: muy grave, 500 € y 6 puntos.");
+T("tra","Los agentes pueden inmovilizar un vehículo cuando, entre otros casos:",["El conductor no lleve el permiso de circulación","El conductor dé positivo en alcohol o drogas, o carezca de permiso válido","Siempre que quieran","El vehículo esté sucio"],1,"Art. 104 RDL 6/2015.");
+T("tra","La autoridad municipal puede ordenar la retirada de un vehículo de la vía urbana cuando:",["Esté mal aparcado sin perjudicar a nadie","Constituya peligro, cause graves perturbaciones a la circulación o al funcionamiento de un servicio público, o se presuma abandonado","Lleve más de 24 horas","Lo pida un vecino"],1,"Art. 105 RDL 6/2015.");
+T("tra","¿Quién sanciona las infracciones de tráfico en vías urbanas?",["El Jefe Provincial de Tráfico","El Alcalde","El Delegado del Gobierno","El Juez de Paz"],1,"Art. 84.4 RDL 6/2015: los Alcaldes, que pueden delegar.");
+T("tra","Las denuncias formuladas por agentes de la autoridad encargados de la vigilancia del tráfico:",["No tienen valor","Hacen fe, salvo prueba en contrario, de los hechos denunciados","Son definitivas e irrecurribles","Solo valen con testigos"],1,"Art. 88 RDL 6/2015.");
+T("tra","En una glorieta, la preferencia de paso la tienen:",["Los que se incorporan","Los que ya circulan por ella","Los de la derecha siempre","Los más grandes"],1,"Art. 57.1.c RGC.");
+T("tra","En una intersección sin señalizar, tiene preferencia el vehículo que se aproxima:",["Por la izquierda","Por la derecha","Por la vía más ancha","El más rápido"],1,"Art. 57.1 RGC, con excepciones como las vías pavimentadas frente a las no pavimentadas o las glorietas.");
+T("tra","¿Qué documentos debe llevar el conductor de un turismo?",["Solo el DNI","Permiso de conducir, permiso de circulación y tarjeta ITV (o sus equivalentes digitales)","El recibo del seguro siempre","El certificado de empadronamiento"],1,"Hoy pueden acreditarse por la app miDGT.");
+T("tra","La competencia para expedir permisos de conducir corresponde a:",["Los Ayuntamientos","El Ministerio del Interior, a través de la DGT (Jefaturas Provinciales)","Las Comunidades Autónomas","La Policía Local"],1,"Art. 5 RDL 6/2015.");
+// ===== POLICÍA LOCAL CLM Y OTROS =====
+T("pol","El Jefe del Cuerpo de Policía Local depende:",["Del Delegado del Gobierno","Directamente del Alcalde o del concejal en quien delegue","De la Junta de Comunidades","Del Juez decano"],1,"Bajo la superior autoridad y dependencia directa del Alcalde (art. 21.1.i LBRL).");
+T("pol","La segunda actividad de los policías locales de CLM es:",["Una situación de excedencia","Una modalidad de la situación de servicio activo","Una jubilación anticipada","Una sanción"],1,"Se accede por edad o por insuficiencia de aptitudes psicofísicas.");
+T("pol","Los Cuerpos de Policía Local de CLM se integran en la escala de:",["Administración General","Administración Especial, subescala de Servicios Especiales, clase Policía Local","Habilitación nacional","Personal laboral"],1,"Así figura en todas las bases de convocatoria.");
+T("otr","La Ley Orgánica para la igualdad efectiva de mujeres y hombres es la:",["LO 1/2004","LO 3/2007, de 22 de marzo","Ley 15/2022","LO 10/2022"],1,"LO 3/2007.");
+T("otr","La ley integral para la igualdad de trato y la no discriminación es la:",["Ley 15/2022, de 12 de julio","LO 3/2007","Ley 4/2023","LO 8/2021"],0,"Ley 15/2022.");
+T("otr","La ley orgánica de garantía integral de la libertad sexual (\"solo sí es sí\") es la:",["LO 10/2022","LO 1/2015","LO 3/2023","LO 8/2021"],0,"LO 10/2022, modificada después por la LO 4/2023.");
+T("otr","Derechos del interesado sobre sus datos (RGPD):",["Acceso, rectificación, supresión, limitación, portabilidad y oposición","Solo acceso","Acceso y venta","Ninguno"],0,"Arts. 15 a 22 RGPD.");
+T("otr","Ante una víctima en parada cardiorrespiratoria, la secuencia básica recomendada es:",["Proteger, avisar al 112 e iniciar compresiones torácicas","Dar agua y esperar","Ponerla en posición lateral de seguridad y marcharse","Moverla siempre"],0,"Conducta PAS (proteger, avisar, socorrer) y RCP: compresiones de calidad y uso precoz del desfibrilador.");
+T("otr","La posición lateral de seguridad se usa en una víctima:",["Inconsciente que respira con normalidad y sin sospecha de lesión medular","En parada cardiorrespiratoria","Consciente con una fractura","Con hemorragia arterial"],0,"Mantiene libre la vía aérea.");
+
+
+const L="ABCD";
+const $=id=>document.getElementById(id);
+let st={};try{st=JSON.parse(localStorage.getItem("tpl_stats")||"{}")}catch(e){st={}}
+function save(){try{localStorage.setItem("tpl_stats",JSON.stringify(st))}catch(e){}}
+const key=q=>q[0]+"-"+q[1];
+
+function fill(){
+  $("fEx").innerHTML='<option value="">Todo (exámenes y práctica)</option><option value="__of">Solo exámenes oficiales</option>'+Object.entries(EX).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+  $("fBl").innerHTML='<option value="">Todos los bloques</option>'+Object.entries(BL).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+}
+function pool(){
+  const ex=$("fEx").value,bl=$("fBl").value,an=$("fAn").checked,fl=$("fFail").checked;
+  return Q.filter(q=>(!ex||q[0]===ex||(ex==='__of'&&q[0]!=='tem'))&&(!bl||q[2]===bl)&&(an||!q[7])&&(!fl||(st[key(q)]&&st[key(q)].f)));
+}
+function upd(){
+  const n=pool().length;$("avail").textContent=n+" preguntas disponibles con estos filtros.";$("go").disabled=!n;
+  let t=0,a=0,f=0;Object.values(st).forEach(s=>{t+=s.n;a+=s.a;if(s.f)f++});
+  $("sT").textContent=t;$("sA").textContent=t?Math.round(a/t*100)+"%":"0%";$("sF").textContent=f;
+}
+["fEx","fBl","fAn","fFail"].forEach(i=>$(i).addEventListener("change",upd));
+
+let cur=[],i=0,res=[];
+function show(s){["home","quiz","end"].forEach(x=>$(x).classList.toggle("hidden",x!==s));window.scrollTo(0,0)}
+function start(list){
+  cur=list;i=0;res=[];show("quiz");render();
+}
+$("go").onclick=()=>{
+  let p=pool();
+  if($("fOrd").value==="r"){for(let k=p.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[p[k],p[j]]=[p[j],p[k]]}}
+  else p.sort((a,b)=>a[0]===b[0]?a[1]-b[1]:Object.keys(EX).indexOf(a[0])-Object.keys(EX).indexOf(b[0]));
+  const n=+$("fN").value;if(n)p=p.slice(0,n);start(p);
+};
+function tag(s){return s==="anulada"?"Anulada por el tribunal":s==="dudosa"?"Dudosa / impugnable":"Ojo, norma cambiada"}
+function render(){
+  const q=cur[i];
+  $("pos").textContent=`Pregunta ${i+1} de ${cur.length}`;
+  const ok=res.filter(r=>r.ok&&!r.q[7]).length,val=res.filter(r=>!r.q[7]).length;
+  $("score").textContent=val?`${ok}/${val} aciertos`:"";
+  $("prog").style.width=(i/cur.length*100)+"%";
+  $("chips").innerHTML=`<span class="chip">${EX[q[0]]}</span><span class="chip">${BL[q[2]]}</span>`;
+  $("qt").textContent=q[3];
+  $("opts").innerHTML="";
+  q[4].forEach((o,k)=>{const b=document.createElement("button");b.className="opt";b.innerHTML=`<span class="l">${L[k]}</span><span></span>`;b.lastChild.textContent=o;b.onclick=()=>answer(k);$("opts").appendChild(b)});
+  $("fb").innerHTML="";$("src").textContent="";$("next").disabled=true;
+  $("next").textContent=i===cur.length-1?"Ver resultado":"Siguiente";
+}
+function answer(k){
+  const q=cur[i],ok=k===q[5],btns=$("opts").children;
+  [...btns].forEach((b,j)=>{b.disabled=true;if(j===q[5])b.classList.add("ok");else if(j===k)b.classList.add("ko")});
+  let h="";
+  if(q[7]==="anulada"){
+    h+=`<div class="fb ${ok?"ok":"ko"}"><h3>${ok?"Coincide con la plantilla provisional":"No coincide con la plantilla provisional ("+L[q[5]]+")"}</h3><p>${q[6]}</p></div>`;
+  }else if(ok){h+=`<div class="fb ok"><h3>¡Correcto!</h3><p>${q[6]}</p></div>`}
+  else{h+=`<div class="fb ko"><h3>Incorrecto. La respuesta correcta es la ${L[q[5]]}</h3><p><b>Por qué:</b> ${q[6]}</p></div>`}
+  if(q[7])h+=`<div class="fb warn"><h3>⚠ ${tag(q[7])}</h3><p>${q[8]}</p>${q[7]==="anulada"?"<p><i>Esta pregunta no cuenta para tu nota.</i></p>":""}</div>`;
+  $("fb").innerHTML=h;
+  $("src").textContent=q[0]==='tem'?'Pregunta de práctica redactada según el temario común de las convocatorias de CLM, no sale de un examen oficial.':`Fuente: ${EX[q[0]]}, pregunta nº ${q[1]} del cuestionario oficial.`;
+  res.push({q,k,ok});
+  if(q[7]!=="anulada"){const s=st[key(q)]||{n:0,a:0,f:false};s.n++;if(ok){s.a++;s.f=false}else s.f=true;st[key(q)]=s;save()}
+  $("next").disabled=false;$("next").focus();
+}
+$("next").onclick=()=>{if(i<cur.length-1){i++;render()}else end()};
+$("quit").onclick=()=>{res.length?end():(show("home"),upd())};
+function end(){
+  const v=res.filter(r=>r.q[7]!=="anulada"),a=v.filter(r=>r.ok).length,f=v.length-a,n=v.length||1;
+  $("nota").textContent=(a/n*10).toFixed(2).replace(".",",");
+  $("det").textContent=`${a} aciertos y ${f} fallos de ${v.length} preguntas válidas`+(res.length>v.length?` (+${res.length-v.length} anuladas, sin puntuar)`:"");
+  const p=Math.max(0,(a-f/3)/n*10);
+  $("pen").textContent=`Con penalización de 1/3 por fallo (habitual en CLM): ${p.toFixed(2).replace(".",",")} — se aprueba con 5`;
+  $("rev").innerHTML=res.map((r,j)=>`<div class="rev"><b>${j+1}. ${esc(r.q[3])}</b>${r.q[7]==="anulada"?'<span class="chip warn">Anulada</span> ':""}<span class="${r.ok?"c":"y"}">Tu respuesta: ${L[r.k]}${r.ok?" ✓":" ✗"}</span>${r.ok?"":` · Correcta: <span class="c">${L[r.q[5]]}) ${esc(r.q[4][r.q[5]])}</span>`}</div>`).join("");
+  $("retry").disabled=!res.some(r=>!r.ok&&r.q[7]!=="anulada");
+  show("end");
+}
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+$("retry").onclick=()=>start(res.filter(r=>!r.ok&&r.q[7]!=="anulada").map(r=>r.q));
+$("home2").onclick=()=>{show("home");upd()};
+$("reset").onclick=function(){if(this.dataset.c){st={};save();upd();this.textContent="Borrar progreso";delete this.dataset.c}else{this.dataset.c=1;this.textContent="Pulsa otra vez para confirmar"}};
+try{if('serviceWorker' in navigator&&location.protocol==='https:'&&!window.Capacitor)navigator.serviceWorker.register('sw.js')}catch(e){}
+fill();upd();(()=>{const o=Q.filter(q=>q[0]!=='tem').length;$('cnt').textContent=`${Q.length} preguntas: ${o} de exámenes oficiales y ${Q.length-o} de práctica por temas.`})();
+</script>
+</body>
+</html>
