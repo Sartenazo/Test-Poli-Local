@@ -64,9 +64,19 @@ button{font:inherit;cursor:pointer}
 .note{font-size:.8rem;color:var(--mut)}
 .hidden{display:none}
 a{color:var(--pri)}
+#gate.hidden{display:none}
+#gate{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .card{max-width:360px;width:100%;text-align:center}
+#gate input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1.05rem;margin-top:8px}
+#gate .err{color:var(--ko);font-size:.88rem;min-height:1.2em;margin-top:8px}
 </style>
 </head>
 <body>
+<div id="gate" class="hidden"><div class="card">
+<svg class="badge" style="width:64px;height:64px" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3l17 6v13c0 11-7.5 19.5-17 23C14.5 41.5 7 33 7 22V9z" fill="#f2c94c"/><path d="M24 7l13 4.6V22c0 8.7-5.6 15.6-13 18.7C16.6 37.6 11 30.7 11 22V11.6z" fill="#1b3c8c"/><path d="M24 14l2.6 5.4 5.9.8-4.3 4.1 1 5.8L24 27.3l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#f2c94c"/></svg>
+<h2>Test Policía Local</h2><p class="note">Escribe la clave de acceso</p>
+<form id="gf"><input id="gp" type="password" autocomplete="current-password" placeholder="Clave"><button class="btn full" type="submit">Entrar</button></form>
+<div class="err" id="ge"></div></div></div>
 <header><div class="in">
 <svg class="badge" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3l17 6v13c0 11-7.5 19.5-17 23C14.5 41.5 7 33 7 22V9z" fill="#f2c94c"/><path d="M24 7l13 4.6V22c0 8.7-5.6 15.6-13 18.7C16.6 37.6 11 30.7 11 22V11.6z" fill="#1b3c8c"/><path d="M24 14l2.6 5.4 5.9.8-4.3 4.1 1 5.8L24 27.3l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z" fill="#f2c94c"/></svg>
 <div><h1>Test Policía Local</h1><p id="sub">Exámenes reales de Castilla-La Mancha y práctica por temas</p></div>
@@ -712,6 +722,12 @@ function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 $("retry").onclick=()=>start(res.filter(r=>!r.ok&&r.q[7]!=="anulada").map(r=>r.q));
 $("home2").onclick=()=>{show("home");upd()};
 $("reset").onclick=function(){if(this.dataset.c){st={};save();upd();this.textContent="Borrar progreso";delete this.dataset.c}else{this.dataset.c=1;this.textContent="Pulsa otra vez para confirmar"}};
+(function(){const H="83e73cf1e8bc3c176aa2d42395d69f4626afbed8901ad100ffbdd6168aca2b27",G=document.getElementById("gate");
+let ok=false;try{ok=localStorage.getItem("tpl_key")===H}catch(e){}
+if(window.Capacitor||ok)return;G.classList.remove("hidden");
+async function sha(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+document.getElementById("gf").addEventListener("submit",async e=>{e.preventDefault();const v=document.getElementById("gp").value.trim();
+if(await sha(v)===H){try{localStorage.setItem("tpl_key",H)}catch(e){}G.classList.add("hidden")}else document.getElementById("ge").textContent="Clave incorrecta"});})();
 try{if('serviceWorker' in navigator&&location.protocol==='https:'&&!window.Capacitor)navigator.serviceWorker.register('sw.js')}catch(e){}
 fill();upd();(()=>{const o=Q.filter(q=>q[0]!=='tem').length;$('cnt').textContent=`${Q.length} preguntas: ${o} de exámenes oficiales y ${Q.length-o} de práctica por temas.`})();
 </script>
