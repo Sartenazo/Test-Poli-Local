@@ -28,7 +28,7 @@ Sustituye `www/index.html` por la nueva versión y vuelve a ejecutar
 
 ## Versión web (iPhone, ordenador y Android)
 Cada push a `main` publica la carpeta `www` en GitHub Pages:
-https://sartenazo.github.io/test-poli-local/
+https://sartenazo.github.io/Test-Poli-Local/ (respetando mayúsculas)
 - iPhone: abrir en Safari → Compartir → "Añadir a pantalla de inicio".
 - Ordenador: abrir en Chrome o Edge → icono "Instalar" de la barra de direcciones.
 - Funciona sin conexión una vez abierta. El progreso se guarda en cada dispositivo.
